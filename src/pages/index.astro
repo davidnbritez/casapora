@@ -151,21 +151,94 @@ const datos = JSON.stringify({ tienda: tiendaCliente, productos, opiniones }).re
     <div class="scrim cart-scrim" id="cartScrim" aria-hidden="true">
       <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="cTitle">
         <div class="d-head">
-          <h2 id="cTitle">Tu pedido<span class="sub" id="cSub"></span></h2>
+          <button class="back" id="cBack" hidden aria-label="Volver a tu pedido"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+          <h2 id="cTitle"><span id="cTitleTxt">Tu pedido</span><span class="sub" id="cSub"></span></h2>
           <button class="close static" id="cClose" aria-label="Cerrar pedido" set:html={ICO.x} />
         </div>
+        <ol class="pasos" id="cPasos" aria-label="Pasos"><li id="cP1" aria-current="step">1. Tu pedido</li><li id="cP2">2. Tus datos</li></ol>
         <div class="d-body" id="cBody"></div>
-        <div class="d-fields" id="cFields">
-          <label class="field"><span>Tu nombre <small>(opcional)</small></span><input id="cName" autocomplete="name" /></label>
-          <label class="field"><span>Notas <small>(dirección, horario o si retirás)</small></span><textarea id="cNotes" rows="2"></textarea></label>
+
+        <form class="d-body d-form" id="cForm" hidden novalidate>
+          <div class="field" data-campo="nombre">
+            <label for="fNombre">Nombre y apellido</label>
+            <input id="fNombre" autocomplete="name" required />
+            <small class="err" hidden>Escribí tu nombre.</small>
+          </div>
+
+          {(tienda.zonas.length > 0 || tienda.retiro.activo) && (
+            <fieldset class="field opciones" data-campo="entrega">
+              <legend>¿Cómo lo recibís?</legend>
+              {tienda.zonas.map((z, i) => (
+                <label class="opcion"><input type="radio" name="entrega" value={`z${i}`} />
+                  <span><b>Envío a {z.nombre}</b><small>{z.costo > 0 ? gs(z.costo) : "Costo a coordinar"}{tienda.envio.activo && !z.sinEnvioGratis && ` · gratis desde ${gs(tienda.envio.gratisDesde)}`}</small></span></label>
+              ))}
+              {tienda.retiro.activo && (
+                <label class="opcion"><input type="radio" name="entrega" value="retiro" />
+                  <span><b>{tienda.retiro.texto}</b>{tienda.retiro.detalle && <small>{tienda.retiro.detalle}</small>}</span></label>
+              )}
+              <small class="err" hidden>Elegí cómo lo recibís.</small>
+            </fieldset>
+          )}
+
+          <div class="field" data-campo="direccion" hidden>
+            <label for="fDir">Dirección</label>
+            <textarea id="fDir" rows="2" autocomplete="street-address" placeholder="Calle, número, barrio y una referencia"></textarea>
+            <small class="err" hidden>Escribí la dirección de entrega.</small>
+          </div>
+
+          {tienda.pagos.length > 0 && (
+            <fieldset class="field opciones fila" data-campo="pago">
+              <legend>¿Cómo pagás?</legend>
+              {tienda.pagos.map(p => <label class="opcion chica"><input type="radio" name="pago" value={p} /><span><b>{p}</b></span></label>)}
+              <small class="err" hidden>Elegí cómo pagás.</small>
+            </fieldset>
+          )}
+
+          {tienda.factura.activo && (
+            <div class="field-grupo">
+              <label class="check"><input type="checkbox" id="fFactura" /><span>Necesito factura</span></label>
+              <div class="sub-campos" id="fFacturaCampos" hidden>
+                <div class="field" data-campo="ruc">
+                  <label for="fRuc">RUC o cédula</label>
+                  <input id="fRuc" inputmode="numeric" placeholder="Ej. 1234567-8" />
+                  <small class="err" hidden>Revisá el RUC: solo números y, si tiene, el guion con el dígito final (ej. 1234567-8).</small>
+                </div>
+                <div class="field" data-campo="razon">
+                  <label for="fRazon">Razón social</label>
+                  <input id="fRazon" autocomplete="organization" />
+                  <small class="err" hidden>Escribí la razón social.</small>
+                </div>
+              </div>
+            </div>
+          )}
+
           {tienda.regalo.activo && <label class="check"><input type="checkbox" id="cRegalo" /><span><Fragment set:html={ICO.gift} />Envolver para regalo <small>(+ {gs(tienda.regalo.precio)})</small></span></label>}
-        </div>
+
+          {tienda.camposExtra.map((c, i) => (
+            <div class="field" data-campo={`extra${i}`} data-extra={i}>
+              <label for={`fx${i}`}>{c.etiqueta}{!c.obligatorio && <small> (opcional)</small>}</label>
+              {c.opciones.length
+                ? <select id={`fx${i}`}><option value="">Elegí una opción</option>{c.opciones.map(o => <option>{o}</option>)}</select>
+                : <input id={`fx${i}`} />}
+              {c.ayuda && <small class="ayuda">{c.ayuda}</small>}
+              <small class="err" hidden>Completá este dato.</small>
+            </div>
+          ))}
+
+          <div class="field">
+            <label for="cNotes">Notas <small>(opcional)</small></label>
+            <textarea id="cNotes" rows="2" placeholder="Horario, quién recibe, cualquier detalle"></textarea>
+          </div>
+          <p class="fine izq">Usamos estos datos solo para preparar y entregar tu pedido. Quedan guardados en este celular o computadora para la próxima compra.</p>
+        </form>
+
         <div class="d-foot" id="cFoot">
           <div class="envio-bar" id="cEnvio" hidden></div>
           <dl class="resumen" id="cResumen" hidden></dl>
           <div class="total"><span>Total</span><b id="cTotal"></b></div>
+          <button class="btn btn-primary" id="cNext" type="button">Continuar con mis datos <Fragment set:html={ICO.arrow} /></button>
           <div class="c-op" id="cOpinion" hidden></div>
-          <a class="btn btn-wa" id="cSend" target="_blank" rel="noopener"><Fragment set:html={ICO.wa} />Enviar pedido por WhatsApp</a>
+          <a class="btn btn-wa" id="cSend" target="_blank" rel="noopener" hidden><Fragment set:html={ICO.wa} />Enviar pedido por WhatsApp</a>
           <ul class="m-info c-info" id="cInfo" hidden></ul>
           <p class="fine">Todavía no pagás nada: te confirmamos disponibilidad, envío y forma de pago por WhatsApp.</p>
         </div>

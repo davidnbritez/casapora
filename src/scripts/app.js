@@ -162,13 +162,90 @@ const cartItems = () => Object.entries(cart).map(([key, q]) => ({ key, ...parseK
 const cartCount = () => Object.values(cart).reduce((a, b) => a + b, 0);
 const cartSubtotal = () => cartItems().reduce((t, { p, k, q }) => t + priceOf(p, k).precio * q, 0);
 const optLabel = (p, k) => { const o = optAt(p, k); return o ? `${o.nombre}${o.nota ? `, ${o.nota}` : ""}` : ""; };
-/** Subtotal, envío, regalo y total del pedido. */
+/* ---------- Datos del cliente (paso 2), guardados en este navegador ---------- */
+const ZONAS = TIENDA.zonas || [];
+const RETIRO = TIENDA.retiro || { activo: false };
+const EXTRAS = TIENDA.camposExtra || [];
+const DATOS_KEY = CART_KEY + "-datos";
+const val = id => { const el = document.getElementById(id); return el ? el.value.trim() : ""; };
+const marcado = name => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ""; };
+/** Lo que eligió el cliente en el paso 2. */
+function leerDatos() {
+  const entrega = marcado("entrega");
+  const zona = entrega && entrega[0] === "z" ? ZONAS[+entrega.slice(1)] || null : null;
+  const factura = !!(document.getElementById("fFactura") || {}).checked;
+  return {
+    nombre: val("fNombre"),
+    entrega, zona, retiro: entrega === "retiro",
+    direccion: val("fDir"),
+    pago: marcado("pago"),
+    factura, ruc: val("fRuc"), razon: val("fRazon"),
+    extras: EXTRAS.map((c, i) => ({ etiqueta: c.etiqueta, valor: val(`fx${i}`), obligatorio: c.obligatorio })),
+    notas: val("cNotes"),
+  };
+}
+function guardarDatos() {
+  const d = leerDatos();
+  try { localStorage.setItem(DATOS_KEY, JSON.stringify({ nombre: d.nombre, entrega: d.entrega, direccion: d.direccion, pago: d.pago, factura: d.factura, ruc: d.ruc, razon: d.razon, extras: d.extras.map(x => x.valor) })); } catch {}
+}
+function cargarDatos() {
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem(DATOS_KEY) || "null"); } catch { d = null; }
+  if (!d) return;
+  const set = (id, v) => { const el = document.getElementById(id); if (el && v) el.value = v; };
+  set("fNombre", d.nombre); set("fDir", d.direccion); set("fRuc", d.ruc); set("fRazon", d.razon);
+  (d.extras || []).forEach((v, i) => set(`fx${i}`, v));
+  [["entrega", d.entrega], ["pago", d.pago]].forEach(([n, v]) => { const el = v && document.querySelector(`input[name="${n}"][value="${CSS.escape(v)}"]`); if (el) el.checked = true; });
+  const f = document.getElementById("fFactura"); if (f) f.checked = !!d.factura;
+}
+const normRuc = s => s.replace(/[.\s]/g, "");
+const rucValido = s => /^\d{5,9}(-\d)?$/.test(normRuc(s));
+/** Campos con problema (vacío obligatorio o formato inválido). */
+function validar() {
+  const d = leerDatos(), mal = [];
+  if (!d.nombre) mal.push("nombre");
+  if ((ZONAS.length || RETIRO.activo) && !d.entrega) mal.push("entrega");
+  if (d.zona && !d.direccion) mal.push("direccion");
+  if ((TIENDA.pagos || []).length && !d.pago) mal.push("pago");
+  if (d.factura && !rucValido(d.ruc)) mal.push("ruc");
+  if (d.factura && !d.razon) mal.push("razon");
+  d.extras.forEach((x, i) => { if (x.obligatorio && !x.valor) mal.push(`extra${i}`); });
+  return mal;
+}
+function mostrarErrores(mal) {
+  document.querySelectorAll("#cForm [data-campo]").forEach(f => {
+    const err = mal.includes(f.dataset.campo);
+    f.classList.toggle("invalido", err);
+    const msg = f.querySelector(".err"); if (msg) msg.hidden = !err;
+    f.querySelectorAll("input,textarea,select").forEach(i => i.setAttribute("aria-invalid", err ? "true" : "false"));
+  });
+}
+/** Muestra u oculta dirección y datos de factura según lo elegido. */
+function actualizarFormulario() {
+  const d = leerDatos();
+  const dir = document.querySelector('[data-campo="direccion"]'); if (dir) dir.hidden = !d.zona;
+  const fc = document.getElementById("fFacturaCampos"); if (fc) fc.hidden = !d.factura;
+}
+
+/** Subtotal, envío (según la zona elegida), regalo y total del pedido. */
 function cuentas() {
   const subtotal = cartSubtotal();
-  const envioGratis = ENVIO.activo && subtotal >= ENVIO.gratisDesde;
-  const envio = ENVIO.activo ? (envioGratis ? 0 : ENVIO.costo) : null;   // null = no se calcula envío
+  const d = leerDatos();
+  const alcanzaGratis = ENVIO.activo && subtotal >= ENVIO.gratisDesde;
+  // envio: null = todavía no se sabe (sin zona elegida o costo a coordinar); 0 = gratis o retiro.
+  let envio = null, envioTexto = "", aCoordinar = false;
+  if (d.retiro) { envio = 0; envioTexto = RETIRO.texto || "Retiro coordinado"; }
+  else if (d.zona) {
+    if (alcanzaGratis && !d.zona.sinEnvioGratis) { envio = 0; envioTexto = "gratis"; }
+    else if (d.zona.costo > 0) { envio = d.zona.costo; envioTexto = gs(d.zona.costo); }
+    else { aCoordinar = true; envioTexto = "a coordinar"; }
+  }
   const extraRegalo = REGALO.activo && regalo ? REGALO.precio : 0;
-  return { subtotal, envio, envioGratis, faltante: ENVIO.activo ? Math.max(0, ENVIO.gratisDesde - subtotal) : 0, regalo: extraRegalo, total: subtotal + (envio || 0) + extraRegalo };
+  return {
+    subtotal, envio, envioTexto, aCoordinar, zona: d.zona, retiro: d.retiro, envioGratis: alcanzaGratis,
+    faltante: ENVIO.activo ? Math.max(0, ENVIO.gratisDesde - subtotal) : 0,
+    regalo: extraRegalo, total: subtotal + (envio || 0) + extraRegalo,
+  };
 }
 
 function addToCart(id, k = 0, qty = 1) {
@@ -181,18 +258,23 @@ function addToCart(id, k = 0, qty = 1) {
 }
 function setQty(key, q) { if (q <= 0) delete cart[key]; else cart[key] = Math.min(99, q); saveCart(); renderCart(); }
 function orderMessage() {
-  const c = cuentas();
+  const c = cuentas(), d = leerDatos();
   const lines = cartItems().map(({ p, k, q }) =>
     `• ${q} × ${p.nombre}${optAt(p, k) ? ` (${optLabel(p, k)})` : ""} — ${gs(priceOf(p, k).precio * q)}${isCombo(p) ? ` (${incluyeTexto(p)}${p.bono ? ` · ${p.bono}` : ""})` : ""}`);
-  const name = $("#cName").value.trim(), notes = $("#cNotes").value.trim();
   const out = [`¡Hola ${TIENDA.nombre}! Quiero hacer este pedido:`, "", ...lines, ""];
-  const conDesglose = c.envio !== null || c.regalo;
+  const conDesglose = c.envioTexto || c.regalo;
   if (conDesglose) out.push(`Subtotal: ${gs(c.subtotal)}`);
   if (c.regalo) out.push(`Envoltorio para regalo: ${gs(c.regalo)}`);
-  if (c.envio !== null) out.push(`Envío: ${c.envio === 0 ? "gratis" : gs(c.envio)}`);
-  out.push(`*Total: ${gs(c.total)}*`);
-  if (name) out.push(`Nombre: ${name}`);
-  if (notes) out.push(`Notas: ${notes}`);
+  if (c.retiro) out.push(`Entrega: ${c.envioTexto}`);
+  else if (c.zona) out.push(`Envío (${c.zona.nombre}): ${c.envioTexto}`);
+  out.push(`*Total: ${gs(c.total)}*${c.aCoordinar ? " + envío a coordinar" : ""}`);
+  out.push("");
+  if (d.nombre) out.push(`Nombre: ${d.nombre}`);
+  if (c.zona) out.push(`Dirección: ${d.direccion || "a confirmar"}`);
+  if (d.pago) out.push(`Pago: ${d.pago}`);
+  if (d.factura) out.push(`Factura: RUC ${normRuc(d.ruc)} · Razón social ${d.razon}`);
+  d.extras.forEach(x => { if (x.valor) out.push(`${x.etiqueta}: ${x.valor}`); });
+  if (d.notas) out.push(`Notas: ${d.notas}`);
   out.push("", "¿Está todo disponible?");
   return out.join("\n");
 }
@@ -222,7 +304,9 @@ function renderCart(bump = false) {
   if (bump) [badge, $("#fabN")].forEach(el => { el.classList.remove("bump"); void el.offsetWidth; el.classList.add("bump"); });
   updateFab();
   $("#cSub").textContent = n ? ` · ${n} ${n === 1 ? "artículo" : "artículos"}` : "";
-  $("#cFoot").hidden = n === 0; $("#cFields").hidden = n === 0;
+  if (!n) paso = 1;
+  $("#cFoot").hidden = n === 0;
+  mostrarPaso();
 
   // Sugerencias según lo que hay en el pedido.
   const items = cartItems();
@@ -254,21 +338,44 @@ function renderCart(bump = false) {
   eb.hidden = !ENVIO.activo || !n;
   if (ENVIO.activo && n) {
     const pct = Math.min(100, Math.round((c.subtotal / ENVIO.gratisDesde) * 100));
+    const excluida = c.zona && c.zona.sinEnvioGratis;
+    eb.hidden = !!excluida || c.retiro;
     eb.innerHTML = `<p>${c.envioGratis ? `${ICO.truck}<b>¡Tenés envío gratis!</b>` : `${ICO.truck}<span>Te faltan <b>${gs(c.faltante)}</b> para el envío gratis</span>`}</p><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div>`;
   }
-  // Desglose (solo si hay envío o regalo).
+  // Desglose: subtotal, regalo y envío (cuando ya se eligió cómo recibirlo).
   const rs = $("#cResumen");
-  const desglose = c.envio !== null || c.regalo;
+  const desglose = !!(c.envioTexto || c.regalo);
   rs.hidden = !desglose;
-  rs.innerHTML = desglose ? `<dt>Subtotal</dt><dd>${gs(c.subtotal)}</dd>${c.regalo ? `<dt>Envoltorio para regalo</dt><dd>${gs(c.regalo)}</dd>` : ""}${c.envio !== null ? `<dt>Envío</dt><dd>${c.envio === 0 ? "Gratis" : gs(c.envio)}</dd>` : ""}` : "";
-  $("#cTotal").textContent = gs(c.total);
+  const filaEnvio = c.retiro ? `<dt>Entrega</dt><dd>${esc(c.envioTexto)}</dd>` : c.zona ? `<dt>Envío (${esc(c.zona.nombre)})</dt><dd>${c.envio === 0 ? "Gratis" : esc(c.envioTexto)}</dd>` : "";
+  rs.innerHTML = desglose ? `<dt>Subtotal</dt><dd>${gs(c.subtotal)}</dd>${c.regalo ? `<dt>Envoltorio para regalo</dt><dd>${gs(c.regalo)}</dd>` : ""}${filaEnvio}` : "";
+  $("#cTotal").textContent = gs(c.total) + (c.aCoordinar ? " + envío" : "");
   // Una opinión corta, encima del botón de enviar.
-  const op = n ? opinionCorta() : null;
+  const op = n && paso === 2 ? opinionCorta() : null;
   $("#cOpinion").hidden = !op; $("#cOpinion").innerHTML = op ? opinionHTML(op, true) : "";
   const ci = infoHTML("carrito"); $("#cInfo").hidden = !ci; $("#cInfo").innerHTML = ci;
   updateSendLink();
 }
 function updateSendLink() { $("#cSend").href = waLink(orderMessage()); }
+let paso = 1;
+function mostrarPaso() {
+  const dos = paso === 2 && cartCount() > 0;
+  $("#cBody").hidden = dos; $("#cForm").hidden = !dos;
+  $("#cNext").hidden = dos; $("#cSend").hidden = !dos;
+  $("#cBack").hidden = !dos;
+  $("#cTitleTxt").textContent = dos ? "Tus datos" : "Tu pedido";
+  $("#cPasos").hidden = cartCount() === 0;
+  if (dos) { $("#cP1").removeAttribute("aria-current"); $("#cP2").setAttribute("aria-current", "step"); }
+  else { $("#cP2").removeAttribute("aria-current"); $("#cP1").setAttribute("aria-current", "step"); }
+}
+function irAPaso(n, push = true) {
+  paso = n; renderCart();
+  if (n === 2) {
+    actualizarFormulario();
+    if (push && location.hash !== "#datos") { try { history.pushState({ layer: "datos" }, "", "#datos"); } catch {} }
+    setTimeout(() => { const f = $("#fNombre"); if (f && !f.value) f.focus(); else $("#cBack").focus(); }, 60);
+  }
+  $(".drawer").scrollTop = 0; $("#cForm").scrollTop = 0; $("#cBody").scrollTop = 0;
+}
 
 /* ---------- Ventanas: ficha y pedido (el "atrás" del celular las cierra) ---------- */
 const BG = ["main", "header.top", "footer", "#fab", "#fabCart", ".skip", ".announce", ".band"];
@@ -355,7 +462,7 @@ function openProduct(id, push = true) {
   showLayer($("#scrim"), $("#mClose"), p.id, push);
   $("#scrim .sheet").scrollTop = 0;
 }
-function openCart(push = true) { renderCart(); showLayer($("#cartScrim"), $("#cClose"), "pedido", push); }
+function openCart(push = true) { renderCart(); showLayer($("#cartScrim"), $("#cClose"), paso === 2 ? "datos" : "pedido", push); }
 let tt; function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 2600); }
 function goCatalog() { $("#catTitle").scrollIntoView({ behavior: "smooth", block: "start" }); }
 
@@ -426,10 +533,27 @@ $("#cBody").addEventListener("click", e => {
   else if (t.id === "cBrowse") { closeLayer(); setTimeout(goCatalog, 80); return; }
   if (!document.contains(t)) $("#cClose").focus();
 });
-["#cName", "#cNotes"].forEach(s => $(s).addEventListener("input", updateSendLink));
+cargarDatos(); actualizarFormulario();
+$("#cForm").addEventListener("input", () => { actualizarFormulario(); guardarDatos(); renderCart(); if ($("#cForm").dataset.intento) mostrarErrores(validar()); });
+$("#cForm").addEventListener("change", () => { actualizarFormulario(); guardarDatos(); renderCart(); if ($("#cForm").dataset.intento) mostrarErrores(validar()); });
+$("#cForm").addEventListener("submit", e => e.preventDefault());
+$("#cNext").addEventListener("click", () => irAPaso(2));
+$("#cBack").addEventListener("click", () => { if (location.hash === "#datos") history.back(); else irAPaso(1); });
 const regaloBox = $("#cRegalo");
-if (regaloBox) { regaloBox.checked = regalo; regaloBox.addEventListener("change", () => { regalo = regaloBox.checked; saveCart(); renderCart(); }); }
-$("#cSend").addEventListener("click", () => { updateSendLink(); toast("Abriendo WhatsApp con tu pedido…"); });
+if (regaloBox) { regaloBox.checked = regalo; regaloBox.addEventListener("change", () => { regalo = regaloBox.checked; saveCart(); }); }
+$("#cSend").addEventListener("click", e => {
+  const mal = validar();
+  $("#cForm").dataset.intento = "1";
+  mostrarErrores(mal);
+  if (mal.length) {
+    e.preventDefault();
+    const primero = document.querySelector(`#cForm [data-campo="${mal[0]}"]`);
+    if (primero) { primero.scrollIntoView({ behavior: "smooth", block: "center" }); const i = primero.querySelector("input,textarea,select"); if (i) setTimeout(() => i.focus({ preventScroll: true }), 250); }
+    toast(mal.length === 1 ? "Falta completar un dato" : `Faltan completar ${mal.length} datos`);
+    return;
+  }
+  guardarDatos(); updateSendLink(); toast("Abriendo WhatsApp con tu pedido…");
+});
 $("#mClose").addEventListener("click", closeLayer);
 $("#cClose").addEventListener("click", closeLayer);
 ["#scrim", "#cartScrim"].forEach(s => $(s).addEventListener("click", e => { if (e.target === e.currentTarget) closeLayer(); }));
@@ -437,11 +561,14 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && anyOpen())
 $("#brand").addEventListener("click", e => { e.preventDefault(); scrollTo({ top: 0, behavior: "smooth" }); });
 function syncHash() {
   const id = decodeURIComponent(location.hash.slice(1));
-  if (id === "pedido") openCart(false);
+  if (id === "pedido") { paso = 1; openCart(false); }
+  else if (id === "datos") { paso = 2; openCart(false); actualizarFormulario(); }
   else if (byId(id)) openProduct(id, false);
   else { pushed = false; hideLayers(); }
 }
 window.addEventListener("popstate", syncHash);
+// Al abrir el carrito desde el botón, siempre arranca en el paso 1.
+["#cartBtn", "#fabCart"].forEach(s => $(s).addEventListener("click", () => { paso = 1; }, true));
 window.addEventListener("hashchange", syncHash);
 /* Deslizar hacia abajo para cerrar (celular) */
 [".sheet", ".drawer"].forEach(s => {

@@ -213,9 +213,41 @@ collections:
             widget: object
             collapsed: false
             fields:
-              - { name: activo, label: Activar envío gratis, widget: boolean, default: false, hint: "Prendido: barra de progreso en el carrito, el envío en el total y en el mensaje de WhatsApp, y aviso en la barra de anuncios." }
-              - { name: gratisDesde, label: "Envío gratis desde (Gs.)", widget: number, value_type: int, min: 0 }
-              - { name: costo, label: "Costo de envío por debajo de ese monto (Gs.)", widget: number, value_type: int, min: 0 }
+              - { name: activo, label: Activar envío gratis, widget: boolean, default: false, hint: "Prendido: barra de progreso en el carrito y aviso en la barra de anuncios." }
+              - { name: gratisDesde, label: "Envío gratis desde (Gs.)", widget: number, value_type: int, min: 0, hint: "Se aplica a todas las zonas, salvo las marcadas «sin envío gratis»." }
+          - name: zonas
+            label: Zonas de envío (el cliente elige una en el carrito)
+            widget: list
+            summary: "{{nombre}} — Gs. {{costo}}"
+            fields:
+              - { name: nombre, label: "Zona (ej. Asunción)", widget: string }
+              - { name: costo, label: "Costo de envío (Gs.)", widget: number, value_type: int, min: 0, required: false, hint: "0 o vacío = «costo a coordinar» por WhatsApp." }
+              - { name: sinEnvioGratis, label: Sin envío gratis en esta zona, widget: boolean, default: false, required: false, hint: "Ej. Interior: aunque supere el monto, el envío se coordina aparte." }
+          - name: retiro
+            label: Retiro (sin dirección visible)
+            widget: object
+            fields:
+              - { name: activo, label: Ofrecer retiro, widget: boolean, default: true }
+              - { name: texto, label: Texto de la opción, widget: string, default: Retiro coordinado }
+              - { name: detalle, label: Aclaración, widget: string, required: false, hint: "Ej. Sin costo. Te pasamos el punto de retiro por WhatsApp." }
+          - { name: pagos, label: Formas de pago (el cliente elige una), widget: list, required: false, field: { name: pago, label: Forma de pago, widget: string } }
+          - name: factura
+            label: Factura
+            widget: object
+            fields:
+              - { name: activo, label: "Ofrecer «Necesito factura» (pide RUC y razón social)", widget: boolean, default: true }
+          - name: camposExtra
+            label: Preguntas extra en el carrito
+            hint: "Se agregan al paso «Tus datos» y salen en el mensaje de WhatsApp. Ej. «Fecha preferida de entrega», «¿Cómo nos conociste?»."
+            widget: list
+            required: false
+            summary: "{{etiqueta}}"
+            fields:
+              - { name: etiqueta, label: Pregunta, widget: string }
+              - { name: tipo, label: Tipo de respuesta, widget: select, default: texto, options: [{ label: Texto libre, value: texto }, { label: Lista de opciones, value: opciones }] }
+              - { name: opciones, label: "Opciones (solo si es lista)", widget: list, required: false, field: { name: opcion, label: Opción, widget: string } }
+              - { name: ayuda, label: Texto de ayuda (opcional), widget: string, required: false }
+              - { name: obligatorio, label: Obligatoria, widget: boolean, default: false }
           - name: regalo
             label: Envoltorio para regalo
             widget: object

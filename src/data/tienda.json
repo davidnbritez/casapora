@@ -13,7 +13,16 @@
   "destacado": "almohadones-lino",
   "plazoEntrega": "",
   "garantia": "",
-  "envio": { "activo": false, "gratisDesde": 300000, "costo": 0 },
+  "envio": { "activo": false, "gratisDesde": 300000 },
+  "zonas": [
+    { "nombre": "Asunción", "costo": 0 },
+    { "nombre": "Gran Asunción", "costo": 0 },
+    { "nombre": "Interior", "costo": 0, "sinEnvioGratis": true }
+  ],
+  "retiro": { "activo": true, "texto": "Retiro coordinado", "detalle": "Sin costo. Te pasamos el punto de retiro por WhatsApp." },
+  "pagos": ["Transferencia", "QR", "Efectivo"],
+  "factura": { "activo": true },
+  "camposExtra": [],
   "regalo": { "activo": false, "precio": 0 },
   "opinionesTitulo": "Lo que dicen en casa",
   "catalogoEyebrow": "Catálogo",

@@ -168,7 +168,14 @@ export async function getOpiniones() {
 export async function getTienda() {
   const envio = tienda.envio || {};
   const regalo = tienda.regalo || {};
-  const envioOk = { activo: !!envio.activo && envio.gratisDesde > 0, costo: Number(envio.costo) || 0, gratisDesde: Number(envio.gratisDesde) || 0 };
+  const envioOk = { activo: !!envio.activo && envio.gratisDesde > 0, gratisDesde: Number(envio.gratisDesde) || 0 };
+  // Zonas de envío: costo 0 o vacío = "a coordinar" por WhatsApp.
+  const zonas = (tienda.zonas || []).filter(z => z && z.nombre).map(z => ({ nombre: z.nombre, costo: Number(z.costo) || 0, sinEnvioGratis: !!z.sinEnvioGratis }));
+  const retiro = tienda.retiro || {};
+  const camposExtra = (tienda.camposExtra || []).filter(c => c && c.etiqueta).map(c => ({
+    etiqueta: c.etiqueta, ayuda: c.ayuda || "", obligatorio: !!c.obligatorio,
+    opciones: (c.tipo === "opciones" ? (c.opciones || []) : []).filter(Boolean),
+  }));
   const plazo = (tienda.plazoEntrega || "").trim();
   const garantia = (tienda.garantia || "").trim();
   return {
@@ -184,6 +191,11 @@ export async function getTienda() {
       ...(garantia ? [{ icono: "shield", texto: garantia }] : []),
     ],
     envio: envioOk,
+    zonas,
+    retiro: { activo: retiro.activo !== false, texto: retiro.texto || "Retiro coordinado", detalle: retiro.detalle || "" },
+    pagos: (tienda.pagos || []).filter(Boolean),
+    factura: { activo: !(tienda.factura && tienda.factura.activo === false) },
+    camposExtra,
     regalo: { activo: !!regalo.activo && regalo.precio >= 0, precio: Number(regalo.precio) || 0 },
     portadaImg: await foto(tienda.portada),
     portadaCompartir: await fotoCompartir(tienda.portada),
