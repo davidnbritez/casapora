@@ -1,5 +1,5 @@
 # "Publicar cambios": pasa todo lo guardado en el panel (rama borrador) a la web (rama main).
-# Es la única forma de publicar desde el panel: cada ejecución = 1 publicación en Netlify (15 créditos).
+# Es la forma de publicar lo del panel: cada ejecución = 1 publicación (Cloudflare Pages permite 500 por mes).
 # Se usa desde github.com → Actions → "Publicar cambios" → Run workflow (también desde el celular).
 name: Publicar cambios
 

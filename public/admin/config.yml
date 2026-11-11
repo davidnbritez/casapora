@@ -1,15 +1,20 @@
 # Configuración del panel (Decap CMS) — https://decapcms.org/docs/
 #
-# Login: Netlify Identity + Git Gateway (se activan en Netlify, ver README).
-# Las dos personas entran con email y contraseña; no necesitan cuenta de GitHub.
+# Login: con cuenta de GitHub (botón "Iniciar sesión con GitHub").
+# - Cada persona necesita una cuenta de GitHub con permiso de escritura en el repositorio
+#   (github.com/davidnbritez/casapora → Settings → Collaborators).
+# - El inicio de sesión pasa por un servicio gratis en Cloudflare (sveltia-cms-auth), ver README.
 #
-# IMPORTANTE (ahorro de créditos): el panel guarda en la rama "borrador", NO en la web.
-# - Vista previa gratis del borrador: https://borrador--casapora.netlify.app
-# - Para pasar los cambios a la web: botón "Publicar cambios" del menú del panel
-#   (GitHub Actions → "Publicar cambios" → Run workflow). Cada publicación = 15 créditos.
+# El panel guarda en la rama "borrador", NO en la web.
+# - Vista previa del borrador: https://borrador.casapora.pages.dev
+# - Para pasar los cambios a la web: "Publicar cambios en la web" en el menú del panel
+#   (GitHub Actions → "Publicar cambios" → Run workflow).
 backend:
-  name: git-gateway
+  name: github
+  repo: davidnbritez/casapora
   branch: borrador
+  # Dirección del servicio de inicio de sesión (worker de Cloudflare). La completa Claude Code cuando exista.
+  base_url: https://sveltia-cms-auth.TU-SUBDOMINIO.workers.dev
   commit_messages:
     create: "Nuevo {{collection}}: {{slug}}"
     update: "Editar {{collection}}: {{slug}}"
@@ -21,8 +26,8 @@ locale: es
 # Solo en esta computadora (localhost): permite probar el panel con "npx decap-server" sin login.
 local_backend: true
 # "Ver sitio" del panel abre la vista previa del borrador (gratis), no la web publicada.
-site_url: https://borrador--casapora.netlify.app
-display_url: https://casapora.netlify.app
+site_url: https://borrador.casapora.pages.dev
+display_url: https://casapora.pages.dev
 
 # Las fotos se guardan en src/assets/uploads para que el sitio las convierta a WebP.
 media_folder: src/assets/uploads
