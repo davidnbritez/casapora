@@ -1,0 +1,49 @@
+# "Publicar cambios": pasa todo lo guardado en el panel (rama borrador) a la web (rama main).
+# Es la única forma de publicar desde el panel: cada ejecución = 1 publicación en Netlify (15 créditos).
+# Se usa desde github.com → Actions → "Publicar cambios" → Run workflow (también desde el celular).
+name: Publicar cambios
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Pasar el borrador a la web
+        run: |
+          git config user.name "Casa Porã (panel)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if ! git fetch origin borrador; then
+            echo "### No existe la rama borrador todavía" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if git merge-base --is-ancestor origin/borrador HEAD; then
+            echo "### No había cambios nuevos para publicar" >> "$GITHUB_STEP_SUMMARY"
+            echo "La web ya tiene todo lo que está guardado en el panel." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "Cambios que se publican:" >> "$GITHUB_STEP_SUMMARY"
+          git log --format='- %s' HEAD..origin/borrador >> "$GITHUB_STEP_SUMMARY"
+
+          git merge --no-edit -m "Publicar cambios del panel" origin/borrador
+          git push origin HEAD:main
+          git push origin HEAD:borrador
+
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Listo: la web se actualiza en 1 o 2 minutos" >> "$GITHUB_STEP_SUMMARY"

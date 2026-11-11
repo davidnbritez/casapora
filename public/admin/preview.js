@@ -66,6 +66,12 @@
     }
   });
 
+  // Accesos en el menú del panel: ver el borrador (gratis) y publicar todo junto (15 créditos).
+  if (typeof CMS.registerAdditionalLink === "function") {
+    CMS.registerAdditionalLink({ id: "ver-borrador", title: "Ver borrador (gratis)", data: "https://borrador--casapora.netlify.app", options: { icon: "page" } });
+    CMS.registerAdditionalLink({ id: "publicar", title: "Publicar cambios en la web", data: "https://github.com/davidnbritez/casapora/actions/workflows/publicar.yml", options: { icon: "page" } });
+  }
+
   CMS.registerPreviewStyle("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap");
   CMS.registerPreviewStyle("/admin/preview.css");
   CMS.registerPreviewTemplate("productos", Producto);

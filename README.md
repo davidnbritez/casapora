@@ -23,10 +23,16 @@ npm run build      # genera la carpeta dist/
 
 Las fotos de muestra (living, almohadones, cortinas, canastos y cajas) vienen del prototipo de Áurea Hogar. **Reemplazalas por fotos propias antes de publicar.**
 
-## Publicación
+## Publicación (cuidando los créditos de Netlify)
 
-- Sitio: **https://casapora.netlify.app** — repositorio `davidnbritez/casapora`. Cada push a `main` se publica solo.
-- Para usar un dominio propio, cambiá `https://casapora.netlify.app` en `astro.config.mjs` y en `public/admin/config.yml`.
+- Web: **https://casapora.netlify.app** (rama `main`). Cada publicación en `main` gasta ~15 de los 300 créditos mensuales del plan gratis.
+- **El panel guarda en la rama `borrador`**, no en la web. Vista previa gratis del borrador: **https://borrador--casapora.netlify.app**.
+- **Para publicar lo del panel:** menú del panel → *Publicar cambios en la web*, o github.com/davidnbritez/casapora → **Actions → Publicar cambios → Run workflow**. Pasa todo el borrador a la web en una sola publicación.
+- Cuando cambia `main`, la acción *Sincronizar borrador* lleva esos cambios al borrador sola (si la rama `borrador` no existe, la crea).
+- Para dominio propio: cambiar `https://casapora.netlify.app` en `astro.config.mjs` y `public/admin/config.yml`.
+
+### Configuración necesaria en Netlify (una vez)
+*Project configuration → Build & deploy → Branches and deploy contexts → Branch deploys → "Let me add individual branches"* → agregar **`borrador`** (y las ramas de lote, ej. `lote-1`, para revisarlas antes de publicar).
 
 ## Login del panel (una sola vez, en Netlify)
 
