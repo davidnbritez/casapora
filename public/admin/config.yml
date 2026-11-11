@@ -14,6 +14,8 @@ backend:
     deleteMedia: "Borrar foto {{path}}"
 
 locale: es
+# Solo en esta computadora (localhost): permite probar el panel con "npx decap-server" sin login.
+local_backend: true
 # Cambiá por el dominio definitivo (igual que "site" en astro.config.mjs).
 site_url: https://casapora.netlify.app
 display_url: https://casapora.netlify.app
