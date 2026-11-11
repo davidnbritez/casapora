@@ -10,6 +10,8 @@
   --wa:#15803d; --danger:#b2402f;
   --r:0; --r-lg:0;
   --pad:clamp(16px,4vw,40px); --max:1280px; --hh:76px;
+  /* Espacio libre abajo para el cartel "Powered by Netlify" del plan gratis (64 px). Si se va el cartel, poner 0px. */
+  --badge:72px;
   --shadow-sm:0 1px 2px rgba(36,33,29,.05),0 4px 14px -6px rgba(36,33,29,.10);
   --shadow:0 24px 60px -24px rgba(60,40,20,.35);
   --ease:cubic-bezier(.22,1,.36,1); --dur:.22s; --dur-in:.3s;
@@ -180,7 +182,7 @@ noscript .grid-static{display:grid;grid-template-columns:repeat(auto-fill,minmax
 .band p{margin:0;color:var(--text-2);font-size:.9rem}
 
 /* Footer */
-footer{padding:clamp(40px,6vw,72px) 0 110px;background:var(--bg)}
+footer{padding:clamp(40px,6vw,72px) 0 calc(110px + var(--badge));background:var(--bg)}
 .f-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.3fr;gap:32px}
 .f-brand .name{font-family:var(--serif);font-size:1.7rem}
 .f-brand p{color:var(--text-2);margin:10px 0 0;max-width:30em}
@@ -193,7 +195,7 @@ footer li button:hover,footer li a:hover{color:var(--text)}
 .f-bottom{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);color:var(--text-2);font-size:.84rem}
 
 /* Botón flotante */
-.fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:25;height:52px;padding:0 20px 0 16px;border-radius:var(--r);background:var(--wa);color:#fff;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 14px 30px -10px rgba(21,128,61,.55);transition:transform var(--dur) var(--ease)}
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:calc(max(16px,env(safe-area-inset-bottom)) + var(--badge));z-index:25;height:52px;padding:0 20px 0 16px;border-radius:var(--r);background:var(--wa);color:#fff;font-weight:600;display:flex;align-items:center;gap:8px;box-shadow:0 14px 30px -10px rgba(21,128,61,.55);transition:transform var(--dur) var(--ease)}
 .fab:hover{transform:translateY(-2px)}
 .fab-cart{background:var(--ink);color:#fff;box-shadow:0 14px 30px -10px rgba(36,33,29,.5)}
 .fab-cart b{font-variant-numeric:tabular-nums}
@@ -265,7 +267,7 @@ footer li button:hover,footer li a:hover{color:var(--text)}
 .clear-cart:hover{color:var(--danger)}
 .clear-cart.armed{color:var(--danger);font-weight:600}
 .d-fields{padding:14px 20px 4px;display:grid;gap:12px;border-top:1px solid var(--line)}
-.d-foot{padding:10px 20px max(16px,env(safe-area-inset-bottom));background:var(--card);display:grid;gap:10px}
+.d-foot{padding:10px 20px calc(max(16px,env(safe-area-inset-bottom)) + var(--badge));background:var(--card);display:grid;gap:10px}
 .field{display:grid;gap:6px}
 .field span{font-size:.86rem;font-weight:600}
 .field small{color:var(--text-2);font-weight:400}
@@ -346,7 +348,7 @@ footer li button:hover,footer li a:hover{color:var(--text)}
   .pill.l{left:8px} .pill.r{right:8px}
   .f-grid{grid-template-columns:1fr}
   .scrim{padding:0;align-items:flex-end}
-  .sheet{max-height:92vh;max-height:92dvh;padding-bottom:max(18px,env(safe-area-inset-bottom))}
+  .sheet{max-height:92vh;max-height:92dvh;padding-bottom:calc(max(18px,env(safe-area-inset-bottom)) + var(--badge))}
   .sheet::before{content:"";position:sticky;top:-10px;display:block;width:40px;height:5px;background:var(--line-2);margin:-8px auto 0;grid-column:1/-1;z-index:3}
   .cart-scrim{align-items:flex-end}
   .drawer{width:100%;height:auto;max-height:92vh;max-height:92dvh;transform:translateY(100%);overflow:auto}
