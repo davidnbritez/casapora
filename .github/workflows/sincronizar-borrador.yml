@@ -1,0 +1,45 @@
+# Cuando cambia la web (rama main), lleva esos cambios también al borrador del panel,
+# para que el panel siempre trabaje sobre la última versión. Si el borrador no existe, lo crea.
+# No gasta créditos de Netlify: las publicaciones de ramas que no son main son vistas previas.
+name: Sincronizar borrador
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publicar
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Llevar main al borrador
+        run: |
+          git config user.name "Casa Porã (panel)"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if ! git fetch origin borrador; then
+            git push origin HEAD:refs/heads/borrador
+            echo "Rama borrador creada desde main." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          if git merge-base --is-ancestor HEAD origin/borrador; then
+            echo "El borrador ya está al día." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          git checkout -B borrador origin/borrador
+          git merge --no-edit -m "Traer cambios de la web al borrador" main
+          git push origin borrador
+          echo "Borrador actualizado con los cambios de la web." >> "$GITHUB_STEP_SUMMARY"

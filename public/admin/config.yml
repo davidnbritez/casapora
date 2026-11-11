@@ -2,10 +2,14 @@
 #
 # Login: Netlify Identity + Git Gateway (se activan en Netlify, ver README).
 # Las dos personas entran con email y contraseña; no necesitan cuenta de GitHub.
-# Al guardar, Decap guarda el cambio en GitHub y Netlify vuelve a publicar (~1 minuto).
+#
+# IMPORTANTE (ahorro de créditos): el panel guarda en la rama "borrador", NO en la web.
+# - Vista previa gratis del borrador: https://borrador--casapora.netlify.app
+# - Para pasar los cambios a la web: botón "Publicar cambios" del menú del panel
+#   (GitHub Actions → "Publicar cambios" → Run workflow). Cada publicación = 15 créditos.
 backend:
   name: git-gateway
-  branch: main
+  branch: borrador
   commit_messages:
     create: "Nuevo {{collection}}: {{slug}}"
     update: "Editar {{collection}}: {{slug}}"
@@ -16,8 +20,8 @@ backend:
 locale: es
 # Solo en esta computadora (localhost): permite probar el panel con "npx decap-server" sin login.
 local_backend: true
-# Cambiá por el dominio definitivo (igual que "site" en astro.config.mjs).
-site_url: https://casapora.netlify.app
+# "Ver sitio" del panel abre la vista previa del borrador (gratis), no la web publicada.
+site_url: https://borrador--casapora.netlify.app
 display_url: https://casapora.netlify.app
 
 # Las fotos se guardan en src/assets/uploads para que el sitio las convierta a WebP.
@@ -28,7 +32,7 @@ collections:
   - name: productos
     label: Productos
     label_singular: Producto
-    description: Cada producto del catálogo. Al guardar, el sitio se actualiza en ~1 minuto.
+    description: "Cada producto del catálogo. Lo que guardás queda en el borrador; para que se vea en la web usá «Publicar cambios»."
     folder: src/content/productos
     format: json
     extension: json
@@ -107,6 +111,16 @@ collections:
         fields:
           - { name: clave, label: "Dato (ej. Material)", widget: string }
           - { name: valor, label: "Valor (ej. 100% lino)", widget: string }
+      - name: combinaCon
+        label: Combina con (Completá el ambiente)
+        hint: "2 o 3 productos que se sugieren en la ficha y en el carrito. Si lo dejás vacío, se sugieren productos del mismo ambiente."
+        widget: relation
+        collection: productos
+        multiple: true
+        required: false
+        value_field: slug
+        search_fields: [nombre]
+        display_fields: [nombre]
       - { name: orden, label: Orden, widget: number, value_type: int, default: 100, hint: "Más chico = aparece antes (después de los destacados)." }
       - name: ilustracion
         label: Ilustración de reemplazo (si no hay foto)
@@ -114,6 +128,63 @@ collections:
         required: false
         options: [taza, vasos, toallas, vela, tabla, florero, manta, cubiertos, frascos]
       - { name: fondo, label: Color de fondo de la ilustración, widget: color, required: false }
+
+  - name: combos
+    label: Combos
+    label_singular: Combo
+    description: "Packs de varios productos con precio especial. El precio «por separado» se calcula solo. Si un producto del combo está agotado, el combo también."
+    folder: src/content/combos
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{fields.slug}}"
+    identifier_field: nombre
+    summary: "{{activo | ternary('', '[OCULTO] ')}}{{nombre}} — Gs. {{precio}}"
+    fields:
+      - { name: activo, label: Activo (se muestra en la web), widget: boolean, default: true }
+      - { name: nombre, label: Nombre, widget: string, hint: "Ej. Combo Rincón de sillón" }
+      - name: slug
+        label: Identificador (va en el enlace)
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 'Solo minúsculas, números y guiones']
+      - name: incluye
+        label: Productos incluidos
+        widget: list
+        summary: "{{cantidad}} × {{producto}} {{opcion}}"
+        fields:
+          - { name: producto, label: Producto, widget: relation, collection: productos, value_field: slug, search_fields: [nombre], display_fields: [nombre] }
+          - { name: opcion, label: "Opción (ej. Terracota, Grande)", widget: string, required: false, hint: "Escribila igual que en el producto. Vacío = la opción principal." }
+          - { name: cantidad, label: Cantidad, widget: number, value_type: int, min: 1, default: 1 }
+      - { name: precio, label: "Precio del combo (Gs.)", widget: number, value_type: int, min: 0, hint: "Tiene que ser menor que la suma por separado para que se vea el ahorro. Con precio 0 el combo no se muestra." }
+      - { name: bono, label: Bono (opcional), widget: string, required: false, hint: "Ej. Envoltorio de regalo incluido" }
+      - { name: etiqueta, label: Etiqueta, widget: string, required: false, default: Combo }
+      - { name: fotos, label: Fotos, widget: list, required: false, field: { name: foto, label: Foto, widget: image }, hint: "Si no cargás foto, se usa la del primer producto." }
+      - { name: resumen, label: Resumen (una línea), widget: string, required: false }
+      - { name: descripcion, label: Descripción, widget: text, required: false }
+      - { name: destacado, label: Destacado, widget: boolean, default: false }
+      - { name: orden, label: Orden, widget: number, value_type: int, default: 5 }
+
+  - name: opiniones
+    label: Opiniones
+    label_singular: Opinión
+    description: "Opiniones reales de clientes. Se muestran debajo de la portada, en la ficha del producto y en el carrito. Si no hay ninguna activa, no se muestra nada."
+    folder: src/content/opiniones
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{nombre}}-{{year}}{{month}}{{day}}"
+    identifier_field: nombre
+    summary: "{{activo | ternary('', '[OCULTA] ')}}{{nombre}}, {{barrio}} — {{texto}}"
+    fields:
+      - { name: activo, label: Activa (se muestra en la web), widget: boolean, default: true }
+      - { name: texto, label: Lo que dijo, widget: text, hint: "Mejor corto: una o dos frases." }
+      - { name: nombre, label: Nombre, widget: string, hint: "Ej. Ana" }
+      - { name: barrio, label: Barrio o ciudad, widget: string, required: false, hint: "Ej. Villa Morra" }
+      - { name: producto, label: Producto que compró (opcional), widget: relation, collection: productos, value_field: slug, search_fields: [nombre], display_fields: [nombre], required: false }
+      - { name: foto, label: Foto (opcional), widget: image, required: false }
+      - { name: orden, label: Orden, widget: number, value_type: int, default: 100 }
 
   - name: tienda
     label: Tienda
@@ -133,6 +204,58 @@ collections:
           - { name: eyebrow, label: Texto chico arriba del título, widget: string }
           - { name: titulo, label: Título de portada, widget: string }
           - { name: bajada, label: Texto de portada, widget: text }
+          - { name: ctaCatalogo, label: "Botón 1 de portada (ej. Ver el catálogo)", widget: string }
+          - { name: ctaWhatsapp, label: "Botón 2 de portada (ej. Escribinos)", widget: string }
+          - { name: plazoEntrega, label: Plazo de entrega, widget: string, required: false, hint: "Ej. «en 24 a 48 h hábiles». Se muestra como «Entrega en 24 a 48 h hábiles» en la portada, la ficha y el carrito. Vacío = no se muestra." }
+          - { name: garantia, label: Garantía y cambios (texto corto), widget: string, required: false, hint: "Ej. «Cambios dentro de 7 días (ropa de cama, solo sin abrir)». Se muestra en la portada, la ficha y el carrito. Vacío = no se muestra." }
+          - name: envio
+            label: Envío gratis
+            widget: object
+            collapsed: false
+            fields:
+              - { name: activo, label: Activar envío gratis, widget: boolean, default: false, hint: "Prendido: barra de progreso en el carrito y aviso en la barra de anuncios." }
+              - { name: gratisDesde, label: "Envío gratis desde (Gs.)", widget: number, value_type: int, min: 0, hint: "Se aplica a todas las zonas, salvo las marcadas «sin envío gratis»." }
+          - name: zonas
+            label: Zonas de envío (el cliente elige una en el carrito)
+            widget: list
+            summary: "{{nombre}} — Gs. {{costo}}"
+            fields:
+              - { name: nombre, label: "Zona (ej. Asunción)", widget: string }
+              - { name: costo, label: "Costo de envío (Gs.)", widget: number, value_type: int, min: 0, required: false, hint: "0 o vacío = «costo a coordinar» por WhatsApp." }
+              - { name: sinEnvioGratis, label: Sin envío gratis en esta zona, widget: boolean, default: false, required: false, hint: "Ej. Interior: aunque supere el monto, el envío se coordina aparte." }
+          - name: retiro
+            label: Retiro (sin dirección visible)
+            widget: object
+            fields:
+              - { name: activo, label: Ofrecer retiro, widget: boolean, default: true }
+              - { name: texto, label: Texto de la opción, widget: string, default: Retiro coordinado }
+              - { name: detalle, label: Aclaración, widget: string, required: false, hint: "Ej. Sin costo. Te pasamos el punto de retiro por WhatsApp." }
+          - { name: pagos, label: Formas de pago (el cliente elige una), widget: list, required: false, field: { name: pago, label: Forma de pago, widget: string } }
+          - name: factura
+            label: Factura
+            widget: object
+            fields:
+              - { name: activo, label: "Ofrecer «Necesito factura» (pide RUC y razón social)", widget: boolean, default: true }
+          - name: camposExtra
+            label: Preguntas extra en el carrito
+            hint: "Se agregan al paso «Tus datos» y salen en el mensaje de WhatsApp. Ej. «Fecha preferida de entrega», «¿Cómo nos conociste?»."
+            widget: list
+            required: false
+            summary: "{{etiqueta}}"
+            fields:
+              - { name: etiqueta, label: Pregunta, widget: string }
+              - { name: tipo, label: Tipo de respuesta, widget: select, default: texto, options: [{ label: Texto libre, value: texto }, { label: Lista de opciones, value: opciones }] }
+              - { name: opciones, label: "Opciones (solo si es lista)", widget: list, required: false, field: { name: opcion, label: Opción, widget: string } }
+              - { name: ayuda, label: Texto de ayuda (opcional), widget: string, required: false }
+              - { name: obligatorio, label: Obligatoria, widget: boolean, default: false }
+          - name: regalo
+            label: Envoltorio para regalo
+            widget: object
+            collapsed: false
+            fields:
+              - { name: activo, label: Ofrecer envoltorio para regalo, widget: boolean, default: false, hint: "Prendido: aparece una casilla en el carrito." }
+              - { name: precio, label: "Precio del envoltorio (Gs.)", widget: number, value_type: int, min: 0 }
+          - { name: opinionesTitulo, label: Título de la franja de opiniones, widget: string, required: false }
           - name: destacado
             label: Producto destacado en portada
             widget: relation
@@ -149,7 +272,7 @@ collections:
             widget: list
             summary: "{{texto}}"
             fields:
-              - { name: icono, label: Ícono, widget: select, options: [{ label: Envío, value: truck }, { label: Pago, value: card }, { label: Chat, value: chat }] }
+              - { name: icono, label: Ícono, widget: select, options: [{ label: Envío, value: truck }, { label: Pago, value: card }, { label: Chat, value: chat }, { label: Reloj, value: clock }, { label: Garantía, value: shield }, { label: Regalo, value: gift }] }
               - { name: texto, label: "Texto (lo que va antes de ':' se destaca)", widget: string }
           - { name: pie, label: Aclaración del pie, widget: string }
           - { name: tipos, label: Tipos de producto (pestañas), widget: list, field: { name: tipo, label: Tipo, widget: string } }

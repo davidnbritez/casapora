@@ -50,5 +50,9 @@
       "clave": "Cuidado",
       "valor": "Lavado delicado"
     }
+  ],
+  "combinaCon": [
+    "almohadones-lino",
+    "canastos-tejidos"
   ]
 }

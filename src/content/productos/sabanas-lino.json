@@ -52,5 +52,9 @@
       "clave": "Cuidado",
       "valor": "Lavarropas a 40 °C, no necesita planchado"
     }
+  ],
+  "combinaCon": [
+    "almohadones-lino",
+    "mesita-taburete"
   ]
 }

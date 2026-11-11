@@ -34,5 +34,8 @@
       "clave": "Cuidado",
       "valor": "Paño húmedo y jabón neutro"
     }
+  ],
+  "combinaCon": [
+    "toallas-waffle"
   ]
 }

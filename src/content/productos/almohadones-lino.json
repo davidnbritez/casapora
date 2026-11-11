@@ -53,5 +53,10 @@
       "clave": "Cuidado",
       "valor": "Lavarropas en frío"
     }
+  ],
+  "combinaCon": [
+    "manta-tejida",
+    "cortina-lino",
+    "vela-aromatica"
   ]
 }

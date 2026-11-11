@@ -1,0 +1,18 @@
+{
+  "activo": false,
+  "destacado": true,
+  "slug": "rincon-de-sillon",
+  "nombre": "Combo Rincón de sillón",
+  "etiqueta": "Combo",
+  "precio": 0,
+  "bono": "Envoltorio de regalo incluido",
+  "resumen": "EJEMPLO: completar productos y precio antes de activar.",
+  "descripcion": "Todo para armar un rincón cálido en el living: manta tejida, dos fundas de lino y una vela aromática.",
+  "fotos": [],
+  "incluye": [
+    { "producto": "manta-tejida", "opcion": "Terracota", "cantidad": 1 },
+    { "producto": "almohadones-lino", "opcion": "Natural", "cantidad": 2 },
+    { "producto": "vela-aromatica", "opcion": "Vainilla y madera", "cantidad": 1 }
+  ],
+  "orden": 5
+}
