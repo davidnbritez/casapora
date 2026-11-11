@@ -1,14 +1,11 @@
-# Configuración del panel (Sveltia CMS) — https://github.com/sveltia/sveltia-cms
+# Configuración del panel (Decap CMS) — https://decapcms.org/docs/
 #
-# ANTES DE PUBLICAR: cambiá "repo" por tu usuario/repositorio de GitHub y
-# "base_url" por la dirección de tu worker de login (sveltia-cms-auth).
-# Para probar sin internet: abrí /admin en Chrome o Edge y elegí
-# "Trabajar con repositorio local" (Work with Local Repository).
+# Login: Netlify Identity + Git Gateway (se activan en Netlify, ver README).
+# Las dos personas entran con email y contraseña; no necesitan cuenta de GitHub.
+# Al guardar, Decap guarda el cambio en GitHub y Netlify vuelve a publicar (~1 minuto).
 backend:
-  name: github
-  repo: davidnbritez/casapora
+  name: git-gateway
   branch: main
-  base_url: https://sveltia-cms-auth.TU-CUENTA.workers.dev
   commit_messages:
     create: "Nuevo {{collection}}: {{slug}}"
     update: "Editar {{collection}}: {{slug}}"
@@ -21,17 +18,9 @@ locale: es
 site_url: https://casapora.netlify.app
 display_url: https://casapora.netlify.app
 
+# Las fotos se guardan en src/assets/uploads para que el sitio las convierta a WebP.
 media_folder: src/assets/uploads
 public_folder: /uploads
-media_libraries:
-  default:
-    config:
-      transformations:
-        raster_image:
-          format: webp
-          quality: 85
-          width: 2000
-          height: 2000
 
 collections:
   - name: productos
@@ -43,12 +32,10 @@ collections:
     extension: json
     create: true
     delete: true
-    slug: "{{slug}}"
+    slug: "{{fields.slug}}"
     identifier_field: nombre
     summary: "{{activo | ternary('', '[OCULTO] ')}}{{nombre}} — Gs. {{precio}}{{precioOferta | ternary(' · OFERTA', '')}}{{agotado | ternary(' · AGOTADO', '')}}"
-    sortable_fields:
-      fields: [orden, nombre, precio, categoria]
-      default: { field: orden, direction: ascending }
+    sortable_fields: [orden, nombre, precio, categoria]
     view_filters:
       - { label: Desactivados, field: activo, pattern: false }
       - { label: Agotados, field: agotado, pattern: true }

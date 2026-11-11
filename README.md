@@ -1,6 +1,6 @@
 # Casa Porã — catálogo con pedido por WhatsApp
 
-Sitio estático en **Astro**, panel de carga en **/admin** (Sveltia CMS) y publicación en **Netlify**.
+Sitio estático en **Astro**, panel de carga en **/admin** (Decap CMS + Netlify Identity) y publicación en **Netlify**.
 El brief completo está en [BRIEF.md](BRIEF.md). El prototipo original quedó en [prototipo/index.html](prototipo/index.html).
 
 ## Usar en tu computadora
@@ -23,12 +23,15 @@ npm run build      # genera la carpeta dist/
 
 Las fotos de muestra (living, almohadones, cortinas, canastos y cajas) vienen del prototipo de Áurea Hogar. **Reemplazalas por fotos propias antes de publicar.**
 
-## Publicar en Netlify (una sola vez)
+## Publicación
 
-1. Subí esta carpeta a un repositorio nuevo de GitHub.
-2. En Netlify: *Add new site → Import from Git*, elegí el repositorio. La configuración ya está en `netlify.toml`.
-3. Cambiá `https://casapora.netlify.app` por tu dominio en `astro.config.mjs` y en `public/admin/config.yml`.
-4. Login del panel: desplegá el worker [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) en Cloudflare (gratis), creá una *OAuth App* en GitHub que apunte a ese worker, y poné su dirección en `base_url` y tu repositorio en `repo` dentro de `public/admin/config.yml`.
-5. Listo: entrás a `tudominio/admin`, editás y al guardar Netlify republica en ~1 minuto.
+- Sitio: **https://casapora.netlify.app** — repositorio `davidnbritez/casapora`. Cada push a `main` se publica solo.
+- Para usar un dominio propio, cambiá `https://casapora.netlify.app` en `astro.config.mjs` y en `public/admin/config.yml`.
 
-Para probar el panel sin configurar nada, abrí `http://localhost:4321/admin/index.html` en Chrome o Edge y elegí **Work with Local Repository** sobre esta carpeta.
+## Login del panel (una sola vez, en Netlify)
+
+1. **Project configuration → Identity → Enable Identity.**
+2. En *Registration preferences* elegí **Invite only** (nadie se puede registrar solo).
+3. En *Services → Git Gateway* tocá **Enable Git Gateway** (le da permiso al panel para guardar en GitHub).
+4. En la pestaña **Identity** (arriba) tocá **Invite users** y poné los emails de las dos personas.
+5. Cada una recibe un email, toca el enlace, elige contraseña y queda adentro de `casapora.netlify.app/admin`.
