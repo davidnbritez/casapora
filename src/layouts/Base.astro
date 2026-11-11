@@ -6,6 +6,7 @@ const { tienda, titulo, descripcion, imagen, tipos = [], ambientes = [], inicio 
 const waHola = `https://wa.me/${tienda.whatsapp}?text=${encodeURIComponent(`¡Hola ${tienda.nombre}! Quiero hacer una consulta.`)}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImg = imagen ? new URL(imagen, Astro.site).href : null;
+const ogJpg = !!imagen && /\.jpe?g($|\?)/i.test(imagen);
 const anio = new Date().getFullYear();
 const raiz = inicio ? "" : "/";
 ---
@@ -25,6 +26,7 @@ const raiz = inicio ? "" : "/";
   <meta property="og:description" content={descripcion} />
   <meta property="og:url" content={canonical} />
   {ogImg && <meta property="og:image" content={ogImg} />}
+  {ogJpg && <><meta property="og:image:type" content="image/jpeg" /><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /></>}
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -39,7 +41,7 @@ const raiz = inicio ? "" : "/";
 <body>
   <a class="skip" href={`${raiz}#catalogo`}>Saltar al catálogo</a>
 
-  <div class="announce">{tienda.anuncios.map(a => <span>{a}</span>)}</div>
+  <div class="announce">{tienda.anunciosTodos.map(a => <span>{a}</span>)}</div>
 
   <header class="top">
     <div class="wrap bar">
@@ -60,7 +62,7 @@ const raiz = inicio ? "" : "/";
 
   <section class="band" aria-label="Nuestro compromiso">
     <div class="wrap">
-      {tienda.compromisos.map(c => {
+      {tienda.compromisosTodos.map(c => {
         const [t, ...r] = c.texto.split(":");
         return <div><Fragment set:html={ICO[c.icono] || ICO.chat} /><div><b>{t}</b>{r.length > 0 && <p>{r.join(":").trim()}</p>}</div></div>;
       })}
@@ -73,7 +75,7 @@ const raiz = inicio ? "" : "/";
         <div class="f-brand"><div class="name">{tienda.nombre}</div><p>{tienda.sobre}</p></div>
         <div><h4>Colección</h4><ul>{tipos.map(t => <li>{inicio ? <button data-goto-tipo={t}>{t}</button> : <a href="/#catalogo">{t}</a>}</li>)}</ul></div>
         <div><h4>Ambientes</h4><ul>{ambientes.map(a => <li>{inicio ? <button data-goto-amb={a}>{a}</button> : <a href="/#catalogo">{a}</a>}</li>)}</ul></div>
-        <div><h4>Nuestro compromiso</h4><ul class="f-promise">{tienda.compromisos.map(c => <li><Fragment set:html={ICO[c.icono] || ICO.chat} /><span>{c.texto}</span></li>)}</ul></div>
+        <div><h4>Nuestro compromiso</h4><ul class="f-promise">{tienda.compromisosTodos.map(c => <li><Fragment set:html={ICO[c.icono] || ICO.chat} /><span>{c.texto}</span></li>)}</ul></div>
       </div>
       <div class="f-bottom"><span>© {anio} {tienda.nombre}. {tienda.pie}</span><a href={waHola} target="_blank" rel="noopener">WhatsApp +{tienda.whatsapp}</a></div>
     </div>

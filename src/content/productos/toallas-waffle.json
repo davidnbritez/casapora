@@ -45,5 +45,8 @@
       "valor": "Lavar a 40 °C sin suavizante"
     }
   ],
-  "precioOferta": 210000
+  "precioOferta": 210000,
+  "combinaCon": [
+    "organizador-bano"
+  ]
 }

@@ -10,8 +10,8 @@
   --wa:#15803d; --danger:#b2402f;
   --r:0; --r-lg:0;
   --pad:clamp(16px,4vw,40px); --max:1280px; --hh:76px;
-  /* Espacio libre abajo para el cartel "Powered by Netlify" del plan gratis (64 px). Si se va el cartel, poner 0px. */
-  --badge:72px;
+  /* Espacio libre abajo por si Netlify vuelve a mostrar su cartel "Powered by Netlify" (poner 72px). Hoy está desactivado. */
+  --badge:0px;
   --shadow-sm:0 1px 2px rgba(36,33,29,.05),0 4px 14px -6px rgba(36,33,29,.10);
   --shadow:0 24px 60px -24px rgba(60,40,20,.35);
   --ease:cubic-bezier(.22,1,.36,1); --dur:.22s; --dur-in:.3s;
@@ -362,4 +362,91 @@ footer li button:hover,footer li a:hover{color:var(--text)}
   .fab.fab-cart span.lbl{display:inline}
   .fab.fab-cart span.n{display:grid}
 }
+
+/* ---------- Lote 1 ---------- */
+/* Botón flotante de WhatsApp oculto cuando taparía algo */
+.fab{transition:transform var(--dur) var(--ease),opacity var(--dur)}
+.fab.fab-off{opacity:0;transform:translateY(16px);pointer-events:none}
+body.capa-abierta .fab{opacity:0;pointer-events:none}
+
+/* Opiniones */
+.opiniones{padding-top:clamp(32px,5vw,56px)}
+.op-title{font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.01em;text-align:center;margin:0 0 20px}
+.op-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.op-card{margin:0;background:var(--card);border:1px solid var(--line);padding:20px;display:flex;flex-direction:column;gap:12px}
+.op-card img{width:56px;height:56px;object-fit:cover;border-radius:50%}
+.op-card blockquote{margin:0;font-family:var(--serif);font-size:1.08rem;line-height:1.45}
+.op-card figcaption{font-size:.86rem;color:var(--text-2);margin-top:auto}
+.op-card figcaption b{color:var(--text);font-weight:600}
+.op-card figcaption span{display:block;font-size:.78rem;color:var(--text-3);margin-top:2px}
+.op-mini{margin:0;padding:12px 14px;background:var(--bg);border-left:2px solid var(--accent-deco)}
+.op-mini + .op-mini{margin-top:8px}
+.op-mini blockquote{margin:0;font-family:var(--serif);font-size:.98rem;line-height:1.4}
+.op-mini figcaption{font-size:.8rem;color:var(--text-2);margin-top:4px}
+.op-mini.chica blockquote{font-size:.9rem}
+.m-ops{margin:4px 0 12px}
+.c-op{margin-top:2px}
+
+/* Plazo de entrega y garantía */
+.m-info{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px;font-size:.88rem;color:var(--text-2)}
+.m-info li{display:flex;gap:8px;align-items:flex-start}
+.m-info svg{color:var(--accent);flex:none;margin-top:2px}
+.c-info{margin:0}
+
+/* Combos */
+.card.combo{border-color:var(--line-2)}
+.combo-inc{margin:2px 0 0;font-size:.82rem;color:var(--text-2);line-height:1.4}
+.combo-sep{margin:2px 0 0;font-size:.8rem;color:var(--text-3)}
+.incluye{margin:18px 0 0;background:var(--bg);border:1px solid var(--line);padding:14px 16px}
+.incluye h4,.sug h4{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin:0 0 8px;color:var(--text)}
+.incluye ul{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:.92rem}
+.incluye li{display:flex;justify-content:space-between;gap:12px}
+.incluye li span:last-child{color:var(--text-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.incluye .combo-sep{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);font-size:.88rem;color:var(--text-2)}
+.incluye .combo-sep b{color:var(--accent)}
+.bono{display:flex;gap:8px;align-items:center;margin:8px 0 0;font-weight:600;color:var(--sage);font-size:.9rem}
+
+/* Completá el ambiente */
+.sug{margin-top:22px}
+.mini-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.c-sug{margin:8px 0 12px}
+.c-sug .mini-row{grid-template-columns:repeat(2,1fr)}
+.mini{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line)}
+.mini-img{display:block;aspect-ratio:4/3;overflow:hidden;background:var(--bg-2)}
+.mini-img img,.mini-img svg{width:100%;height:100%;object-fit:cover;display:block}
+.mini-b{padding:8px 10px 10px;display:flex;flex-direction:column;gap:4px;flex:1}
+.mini-nm{text-align:left;font-size:.84rem;font-weight:500;line-height:1.25;min-height:44px}
+.mini .price b{font-size:1rem}
+.mini .btn-add,.mini .btn-notify{width:100%;height:40px;margin-top:auto}
+
+/* Envío gratis y desglose */
+.envio-bar p{display:flex;gap:8px;align-items:center;margin:0 0 6px;font-size:.88rem;color:var(--text-2)}
+.envio-bar svg{color:var(--sage);flex:none}
+.envio-bar b{color:var(--text)}
+.envio-bar .bar{height:6px;background:var(--bg-3);overflow:hidden}
+.envio-bar .bar i{display:block;height:100%;background:var(--sage);transition:width .4s var(--ease)}
+.resumen{display:grid;grid-template-columns:1fr auto;gap:2px 12px;margin:0;font-size:.9rem;color:var(--text-2);font-variant-numeric:tabular-nums}
+.resumen dd{margin:0;text-align:right}
+
+/* Envoltorio para regalo */
+.check{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer;font-weight:500}
+.check input{width:20px;height:20px;accent-color:var(--ink);flex:none}
+.check span{display:inline-flex;align-items:center;gap:8px}
+.check svg{color:var(--accent)}
+.check small{color:var(--text-2);font-weight:400}
+
+@media (max-width:1000px){ .op-row{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:640px){
+  .op-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin:0 calc(var(--pad)*-1);padding:0 var(--pad) 6px;scrollbar-width:none}
+  .op-row::-webkit-scrollbar{display:none}
+  .op-card{flex:0 0 82%;scroll-snap-align:start;padding:16px}
+  .op-title{text-align:left;font-size:1.4rem;margin-bottom:14px}
+  .mini-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;scrollbar-width:none}
+  .mini-row::-webkit-scrollbar{display:none}
+  .mini{flex:0 0 44%;scroll-snap-align:start}
+  .c-sug .mini{flex-basis:47%}
+  /* Margen para que el botón flotante no tape lo último de la página */
+  main{padding-bottom:24px}
+}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

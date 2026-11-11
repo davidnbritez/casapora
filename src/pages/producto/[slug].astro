@@ -3,7 +3,7 @@
 // el enlace por WhatsApp/Instagram aparezca la foto, el nombre y el precio.
 import Base from "../../layouts/Base.astro";
 import { ICO, ART } from "../../scripts/arte.js";
-import { getProductos, getTienda, gs, precioMin, listas } from "../../lib/datos.js";
+import { getProductos, getTienda, getOpiniones, fotoCompartir, gs, precioMin, listas } from "../../lib/datos.js";
 
 export async function getStaticPaths() {
   const productos = await getProductos();
@@ -14,6 +14,10 @@ const { p } = Astro.props;
 const tienda = await getTienda();
 const { tipos, ambientes } = listas(tienda, await getProductos());
 const f = p.fotos[0];
+// Imagen para compartir: JPG 1200×630 (más compatible con WhatsApp y Facebook que WebP).
+const ogImagen = f ? await fotoCompartir(f.src) : tienda.portadaCompartir;
+const ids = new Set([p.id, ...(p.incluye || []).map(i => i.slug)]);
+const ops = (await getOpiniones()).filter(o => ids.has(o.producto)).slice(0, 2);
 const conOpcionesDePrecio = p.opciones && p.opciones.items.some(o => o.precio);
 const precio = conOpcionesDePrecio ? `desde ${gs(precioMin(p))}` : gs(p.precio);
 const desc = `${p.resumen || p.descripcion || ""} ${precio}.`.trim();
@@ -24,7 +28,7 @@ const ld = {
   offers: { "@type": "Offer", priceCurrency: "PYG", price: precioMin(p), availability: p.agotado ? "https://schema.org/OutOfStock" : "https://schema.org/InStock" },
 };
 ---
-<Base tienda={tienda} titulo={`${p.nombre} · ${tienda.nombre}`} descripcion={desc} imagen={f?.lg} tipos={tipos} ambientes={ambientes}>
+<Base tienda={tienda} titulo={`${p.nombre} · ${tienda.nombre}`} descripcion={desc} imagen={ogImagen} tipos={tipos} ambientes={ambientes}>
   <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(ld)} />
   <main class="wrap">
     <nav class="crumbs" aria-label="Ruta"><a href="/">Inicio</a> / <a href="/#catalogo">{p.categoria}</a> / <span>{p.nombre}</span></nav>
@@ -47,7 +51,22 @@ const ld = {
         <div class="buy">
           {!p.agotado && <a class="btn btn-primary" href={`/#${p.id}`}><Fragment set:html={ICO.bag} />Elegir y agregar al pedido</a>}
         </div>
+        {ops.length > 0 && <div class="m-ops">{ops.map(o => <figure class="op-mini"><blockquote>“{o.texto}”</blockquote><figcaption>{o.nombre}{o.barrio && `, ${o.barrio}`}</figcaption></figure>)}</div>}
         <a class={`btn ${p.agotado ? "btn-wa" : "btn-wa-ghost"}`} href={consulta} target="_blank" rel="noopener"><Fragment set:html={ICO.wa} />{p.agotado ? "Avisarme cuando llegue" : "Hacer una consulta"}</a>
+        {(tienda.plazoEntrega || tienda.garantia) && (
+          <ul class="m-info">
+            {tienda.plazoEntrega && <li><Fragment set:html={ICO.clock} /><span>Entrega {tienda.plazoEntrega}</span></li>}
+            {tienda.garantia && <li><Fragment set:html={ICO.shield} /><span>{tienda.garantia}</span></li>}
+          </ul>
+        )}
+        {p.tipo === "combo" && (
+          <div class="incluye">
+            <h4>Incluye</h4>
+            <ul>{p.incluye.map(i => <li><span>{i.cantidad > 1 && `${i.cantidad} × `}{i.nombre}{i.opcion && <small> ({i.opcion})</small>}</span><span>{gs(i.precio * i.cantidad)}</span></li>)}</ul>
+            {p.separado > p.precio && <p class="combo-sep">Si los comprás por separado: <s>{gs(p.separado)}</s> · <b>Precio del combo: {gs(p.precio)}</b></p>}
+            {p.bono && <p class="bono"><Fragment set:html={ICO.gift} /><span>{p.bono}</span></p>}
+          </div>
+        )}
         {p.descripcion && <p class="desc-l">{p.descripcion}</p>}
         {p.detalles.length > 0 && <dl class="specs">{p.detalles.map(d => <><dt>{d.clave}</dt><dd>{d.valor}</dd></>)}</dl>}
       </div>

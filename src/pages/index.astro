@@ -1,10 +1,12 @@
 ---
 import Base from "../layouts/Base.astro";
 import { ICO } from "../scripts/arte.js";
-import { getProductos, getTienda, gs, precioMin, listas } from "../lib/datos.js";
+import { getProductos, getTienda, getOpiniones, gs, precioMin, listas } from "../lib/datos.js";
 
 const tienda = await getTienda();
 const productos = await getProductos();
+const opiniones = await getOpiniones();
+const nombreDe = slug => productos.find(p => p.id === slug)?.nombre;
 const { tipos, ambientes } = listas(tienda, productos);
 
 const destacado = productos.find(p => p.id === tienda.destacado) || productos.find(p => !p.agotado);
@@ -13,10 +15,10 @@ const waHola = `https://wa.me/${tienda.whatsapp}?text=${encodeURIComponent(`¡Ho
 const tituloPlano = tienda.titulo.replace(/<[^>]+>/g, "");
 
 // Datos que usa el navegador (sin campos que no hacen falta).
-const { portadaImg, ...tiendaCliente } = tienda;
-const datos = JSON.stringify({ tienda: tiendaCliente, productos }).replace(/</g, "\\u003c");
+const { portadaImg, portadaCompartir, compromisosTodos, anunciosTodos, ...tiendaCliente } = tienda;
+const datos = JSON.stringify({ tienda: tiendaCliente, productos, opiniones }).replace(/</g, "\\u003c");
 ---
-<Base tienda={tienda} titulo={`${tienda.nombre} · ${tienda.lema}`} descripcion={tienda.bajada} imagen={portada?.lg} tipos={tipos} ambientes={ambientes} inicio>
+<Base tienda={tienda} titulo={`${tienda.nombre} · ${tienda.lema}`} descripcion={tienda.bajada} imagen={tienda.portadaCompartir || portada?.lg} tipos={tipos} ambientes={ambientes} inicio>
   {portada && <link slot="head" rel="preload" as="image" href={portada.md} imagesrcset={`${portada.sm} 400w, ${portada.md} 800w, ${portada.lg} 1400w`} imagesizes="(max-width:900px) 100vw, 680px" />}
 
   <main>
@@ -27,11 +29,11 @@ const datos = JSON.stringify({ tienda: tiendaCliente, productos }).replace(/</g,
           <h1 set:html={tienda.titulo} />
           <p class="lead">{tienda.bajada}</p>
           <div class="cta">
-            <a href="#catalogo" class="btn btn-primary">Explorar catálogo <Fragment set:html={ICO.arrow} /></a>
-            <a class="btn btn-soft" href={waHola} target="_blank" rel="noopener"><Fragment set:html={ICO.wa} />Escribinos</a>
+            <a href="#catalogo" class="btn btn-primary">{tienda.ctaCatalogo || "Ver el catálogo"} <Fragment set:html={ICO.arrow} /></a>
+            <a class="btn btn-soft" id="heroWa" href={waHola} target="_blank" rel="noopener"><Fragment set:html={ICO.wa} />{tienda.ctaWhatsapp || "Escribinos"}</a>
           </div>
           <div class="trust">
-            {tienda.compromisos.map(c => <><span><Fragment set:html={ICO[c.icono] || ICO.chat} />{c.texto.split(":")[0]}</span></>)}
+            {tienda.compromisosTodos.map(c => <><span><Fragment set:html={ICO[c.icono] || ICO.chat} />{c.texto.split(":")[0]}</span></>)}
           </div>
         </div>
         <div class="feature">
@@ -52,6 +54,21 @@ const datos = JSON.stringify({ tienda: tiendaCliente, productos }).replace(/</g,
         </div>
       </section>
     </div>
+
+    {opiniones.length > 0 && (
+      <section class="wrap opiniones" aria-labelledby="opTitle">
+        <h2 id="opTitle" class="op-title">{tienda.opinionesTitulo || "Lo que dicen en casa"}</h2>
+        <div class="op-row">
+          {opiniones.slice(0, 3).map(o => (
+            <figure class="op-card">
+              {o.foto && <img src={o.foto.sm} width={o.foto.w} height={o.foto.h} alt="" loading="lazy" />}
+              <blockquote>“{o.texto}”</blockquote>
+              <figcaption><b>{o.nombre}</b>{o.barrio && `, ${o.barrio}`}{o.producto && nombreDe(o.producto) && <span>Compró: {nombreDe(o.producto)}</span>}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
 
     <section class="wrap" aria-labelledby="catTitle">
       <div class="cat-head">
@@ -119,10 +136,14 @@ const datos = JSON.stringify({ tienda: tiendaCliente, productos }).replace(/</g,
             </div>
             <button class="btn btn-primary" id="mAdd"><Fragment set:html={ICO.bag} /><span class="t">Agregar al pedido</span></button>
           </div>
+          <div class="m-ops" id="mOps" hidden></div>
           <a class="btn btn-wa-ghost" id="mWa" target="_blank" rel="noopener"><Fragment set:html={ICO.wa} /><span class="t">Hacer una consulta</span></a>
           <button class="link-btn" id="mShare"><Fragment set:html={ICO.link} />Compartir producto</button>
+          <ul class="m-info" id="mInfo" hidden></ul>
+          <div class="incluye" id="mIncluye" hidden></div>
           <p class="desc-l" id="mDesc"></p>
           <dl class="specs" id="mSpecs"></dl>
+          <div class="sug" id="mSug" hidden></div>
         </div>
       </div>
     </div>
@@ -137,10 +158,15 @@ const datos = JSON.stringify({ tienda: tiendaCliente, productos }).replace(/</g,
         <div class="d-fields" id="cFields">
           <label class="field"><span>Tu nombre <small>(opcional)</small></span><input id="cName" autocomplete="name" /></label>
           <label class="field"><span>Notas <small>(dirección, horario o si retirás)</small></span><textarea id="cNotes" rows="2"></textarea></label>
+          {tienda.regalo.activo && <label class="check"><input type="checkbox" id="cRegalo" /><span><Fragment set:html={ICO.gift} />Envolver para regalo <small>(+ {gs(tienda.regalo.precio)})</small></span></label>}
         </div>
         <div class="d-foot" id="cFoot">
+          <div class="envio-bar" id="cEnvio" hidden></div>
+          <dl class="resumen" id="cResumen" hidden></dl>
           <div class="total"><span>Total</span><b id="cTotal"></b></div>
+          <div class="c-op" id="cOpinion" hidden></div>
           <a class="btn btn-wa" id="cSend" target="_blank" rel="noopener"><Fragment set:html={ICO.wa} />Enviar pedido por WhatsApp</a>
+          <ul class="m-info c-info" id="cInfo" hidden></ul>
           <p class="fine">Todavía no pagás nada: te confirmamos disponibilidad, envío y forma de pago por WhatsApp.</p>
         </div>
       </aside>
