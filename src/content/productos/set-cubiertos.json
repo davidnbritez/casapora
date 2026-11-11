@@ -1,0 +1,30 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 120,
+  "slug": "set-cubiertos",
+  "fotos": [],
+  "nombre": "Set de cubiertos 16 piezas",
+  "categoria": "Vajilla",
+  "ambientes": [
+    "Comedor"
+  ],
+  "precio": 150000,
+  "medida": "Para 4 personas",
+  "ilustracion": "cubiertos",
+  "fondo": "#dde2e3",
+  "resumen": "Acero inoxidable con terminación satinada.",
+  "descripcion": "Cubiertos de acero inoxidable para 4 personas, con terminación satinada que no marca huellas.",
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Acero inoxidable"
+    },
+    {
+      "clave": "Incluye",
+      "valor": "16 piezas"
+    }
+  ]
+}

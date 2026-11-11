@@ -1,0 +1,54 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 20,
+  "slug": "cortina-lino",
+  "fotos": [
+    "/uploads/cortina-lino.jpg"
+  ],
+  "nombre": "Cortina de lino natural",
+  "categoria": "Textiles",
+  "ambientes": [
+    "Living",
+    "Dormitorio"
+  ],
+  "precio": 320000,
+  "medida": "2 largos",
+  "resumen": "Caída liviana que filtra la luz sin oscurecer el ambiente.",
+  "descripcion": "Paño de cortina en lino natural con pliegues suaves. Deja pasar la luz de forma difusa y le da calidez a cualquier ventana. Se vende por paño.",
+  "opciones": {
+    "titulo": "Largo",
+    "items": [
+      {
+        "nombre": "Estándar",
+        "nota": "140 × 240 cm",
+        "precio": 320000
+      },
+      {
+        "nombre": "Largo",
+        "nota": "140 × 280 cm",
+        "precio": 360000
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Lino natural"
+    },
+    {
+      "clave": "Ancho",
+      "valor": "140 cm por paño"
+    },
+    {
+      "clave": "Colocación",
+      "valor": "Presillas ocultas"
+    },
+    {
+      "clave": "Cuidado",
+      "valor": "Lavado delicado"
+    }
+  ]
+}

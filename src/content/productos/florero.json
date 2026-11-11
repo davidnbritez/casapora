@@ -1,0 +1,52 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 110,
+  "slug": "florero",
+  "fotos": [],
+  "nombre": "Florero de cerámica",
+  "categoria": "Decoración",
+  "ambientes": [
+    "Living",
+    "Comedor"
+  ],
+  "precio": 85000,
+  "medida": "Alto 22 cm",
+  "ilustracion": "florero",
+  "fondo": "#dfe4d6",
+  "resumen": "Líneas suaves y terminación mate. Lindo con flores o solo.",
+  "descripcion": "Florero de cerámica de líneas suaves y terminación mate. Queda lindo con flores, ramas secas o solo.",
+  "opciones": {
+    "titulo": "Color",
+    "items": [
+      {
+        "nombre": "Hueso",
+        "color": "#f4ece0"
+      },
+      {
+        "nombre": "Terracota",
+        "color": "#b85c38"
+      },
+      {
+        "nombre": "Salvia",
+        "color": "#8b9a7e"
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Cerámica"
+    },
+    {
+      "clave": "Alto",
+      "valor": "22 cm"
+    },
+    {
+      "clave": "Terminación",
+      "valor": "Mate"
+    }
+  ]
+}

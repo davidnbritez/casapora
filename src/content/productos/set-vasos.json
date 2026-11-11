@@ -1,0 +1,36 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 70,
+  "slug": "set-vasos",
+  "fotos": [],
+  "nombre": "Set de 6 vasos de vidrio",
+  "categoria": "Vajilla",
+  "ambientes": [
+    "Comedor",
+    "Cocina"
+  ],
+  "precio": 115000,
+  "medida": "300 ml c/u",
+  "ilustracion": "vasos",
+  "fondo": "#d9e3dc",
+  "resumen": "Vidrio liviano con base gruesa. Para agua, jugos o tereré.",
+  "descripcion": "Vasos de vidrio liviano con base gruesa que no se vuelcan fácil. Para agua, jugos o tereré.",
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Vidrio"
+    },
+    {
+      "clave": "Capacidad",
+      "valor": "300 ml c/u"
+    },
+    {
+      "clave": "Incluye",
+      "valor": "6 unidades"
+    }
+  ],
+  "precioOferta": 95000
+}

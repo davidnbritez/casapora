@@ -1,0 +1,53 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 60,
+  "slug": "taza-ceramica",
+  "fotos": [],
+  "nombre": "Taza de cerámica artesanal",
+  "categoria": "Vajilla",
+  "ambientes": [
+    "Cocina",
+    "Comedor"
+  ],
+  "precio": 45000,
+  "etiqueta": "Hecho a mano",
+  "medida": "350 ml",
+  "ilustracion": "taza",
+  "fondo": "#ead7c3",
+  "resumen": "Esmaltada a mano: cada pieza es única.",
+  "descripcion": "Taza esmaltada a mano, ideal para el café o el cocido de la mañana. Cada pieza tiene pequeñas variaciones que la hacen única.",
+  "opciones": {
+    "titulo": "Color",
+    "items": [
+      {
+        "nombre": "Terracota",
+        "color": "#b85c38"
+      },
+      {
+        "nombre": "Salvia",
+        "color": "#7d8f6e"
+      },
+      {
+        "nombre": "Azul petróleo",
+        "color": "#3f5f6b"
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Cerámica esmaltada"
+    },
+    {
+      "clave": "Capacidad",
+      "valor": "350 ml"
+    },
+    {
+      "clave": "Cuidado",
+      "valor": "Apta lavavajillas"
+    }
+  ]
+}

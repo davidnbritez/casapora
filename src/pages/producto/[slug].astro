@@ -1,0 +1,56 @@
+---
+// Página propia de cada producto: sirve para Google y para que al compartir
+// el enlace por WhatsApp/Instagram aparezca la foto, el nombre y el precio.
+import Base from "../../layouts/Base.astro";
+import { ICO, ART } from "../../scripts/arte.js";
+import { getProductos, getTienda, gs, precioMin, listas } from "../../lib/datos.js";
+
+export async function getStaticPaths() {
+  const productos = await getProductos();
+  return productos.map(p => ({ params: { slug: p.id }, props: { p } }));
+}
+
+const { p } = Astro.props;
+const tienda = await getTienda();
+const { tipos, ambientes } = listas(tienda, await getProductos());
+const f = p.fotos[0];
+const conOpcionesDePrecio = p.opciones && p.opciones.items.some(o => o.precio);
+const precio = conOpcionesDePrecio ? `desde ${gs(precioMin(p))}` : gs(p.precio);
+const desc = `${p.resumen || p.descripcion || ""} ${precio}.`.trim();
+const consulta = `https://wa.me/${tienda.whatsapp}?text=${encodeURIComponent(p.agotado ? `¡Hola! Vi en el catálogo "${p.nombre}" que está agotado. ¿Cuándo vuelve a llegar?` : `¡Hola! Tengo una consulta sobre "${p.nombre}".`)}`;
+const ld = {
+  "@context": "https://schema.org", "@type": "Product", name: p.nombre, description: p.descripcion || p.resumen,
+  image: f ? new URL(f.lg, Astro.site).href : undefined, category: p.categoria,
+  offers: { "@type": "Offer", priceCurrency: "PYG", price: precioMin(p), availability: p.agotado ? "https://schema.org/OutOfStock" : "https://schema.org/InStock" },
+};
+---
+<Base tienda={tienda} titulo={`${p.nombre} · ${tienda.nombre}`} descripcion={desc} imagen={f?.lg} tipos={tipos} ambientes={ambientes}>
+  <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(ld)} />
+  <main class="wrap">
+    <nav class="crumbs" aria-label="Ruta"><a href="/">Inicio</a> / <a href="/#catalogo">{p.categoria}</a> / <span>{p.nombre}</span></nav>
+    <article class="pp">
+      <div>
+        <div class="gal-main">
+          {f
+            ? <img src={f.md} srcset={`${f.sm} 400w, ${f.md} 800w, ${f.lg} 1400w`} sizes="(max-width:900px) 100vw, 640px" width={f.w} height={f.h} alt={p.nombre} />
+            : <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label={p.nombre}><rect width="200" height="200" fill={p.fondo || "#ece4d8"} /><Fragment set:html={ART[p.ilustracion] ? ART[p.ilustracion](p.opciones?.items?.[0]?.color || "#b85c38") : ""} /></svg>}
+        </div>
+      </div>
+      <div class="info">
+        <span class="meta">{[...new Set([p.categoria, ...p.ambientes])].join(" · ")}</span>
+        <h1 class="serif" style="font-family:var(--serif);font-weight:400;font-size:clamp(1.9rem,3.4vw,2.6rem);line-height:1.1;margin:8px 0 10px">{p.nombre}</h1>
+        <div class="price">
+          {p.precioAntes && !conOpcionesDePrecio ? <><b class="sale">{gs(p.precio)}</b><s>{gs(p.precioAntes)}</s></> : <b>{precio}</b>}
+        </div>
+        <div class={`stock${p.agotado ? " out" : ""}`}>{p.agotado ? "Agotado por ahora" : "Disponible"}</div>
+        {p.opciones && <p class="opt-label" style="margin-top:12px">{p.opciones.titulo}: <b>{p.opciones.items.map(o => o.nombre).join(", ")}</b></p>}
+        <div class="buy">
+          {!p.agotado && <a class="btn btn-primary" href={`/#${p.id}`}><Fragment set:html={ICO.bag} />Elegir y agregar al pedido</a>}
+        </div>
+        <a class={`btn ${p.agotado ? "btn-wa" : "btn-wa-ghost"}`} href={consulta} target="_blank" rel="noopener"><Fragment set:html={ICO.wa} />{p.agotado ? "Avisarme cuando llegue" : "Hacer una consulta"}</a>
+        {p.descripcion && <p class="desc-l">{p.descripcion}</p>}
+        {p.detalles.length > 0 && <dl class="specs">{p.detalles.map(d => <><dt>{d.clave}</dt><dd>{d.valor}</dd></>)}</dl>}
+      </div>
+    </article>
+  </main>
+</Base>

@@ -1,0 +1,30 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": true,
+  "orden": 40,
+  "slug": "organizadores-madera",
+  "fotos": [
+    "/uploads/organizadores-madera.jpg"
+  ],
+  "nombre": "Set de cajas organizadoras",
+  "categoria": "Organización",
+  "ambientes": [
+    "Dormitorio"
+  ],
+  "precio": 210000,
+  "medida": "Set de 3",
+  "resumen": "Lona y madera para ordenar placares y estantes.",
+  "descripcion": "Tres cajas de lona rígida con marco y manijas de madera. Ordenan ropa, accesorios o papeles y quedan lindas a la vista.",
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Lona y madera"
+    },
+    {
+      "clave": "Incluye",
+      "valor": "3 cajas de distintos tamaños"
+    }
+  ]
+}

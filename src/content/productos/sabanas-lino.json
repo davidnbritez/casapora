@@ -1,0 +1,56 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": true,
+  "nuevo": true,
+  "orden": 15,
+  "slug": "sabanas-lino",
+  "fotos": [
+    "/uploads/sabanas-lino.jpg"
+  ],
+  "nombre": "Juego de sábanas de lino lavado",
+  "categoria": "Ropa de cama",
+  "ambientes": [
+    "Dormitorio"
+  ],
+  "precio": 590000,
+  "etiqueta": "Colección insignia",
+  "medida": "2 plazas o Queen",
+  "resumen": "Frescas en verano y abrigadas en invierno, con caída suave desde el primer día.",
+  "descripcion": "Juego de sábanas de lino lavado a la piedra: tacto suave, transpirable y con la arruga natural que lo hace lindo sin planchar. Incluye sábana ajustable, sábana plana y dos fundas de almohada.",
+  "opciones": {
+    "titulo": "Color",
+    "items": [
+      {
+        "nombre": "Terracota",
+        "color": "#a6563a"
+      },
+      {
+        "nombre": "Arena",
+        "color": "#c9b79c"
+      },
+      {
+        "nombre": "Blanco natural",
+        "color": "#f1ebe1"
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "100% lino lavado"
+    },
+    {
+      "clave": "Incluye",
+      "valor": "Sábana ajustable, sábana plana y 2 fundas"
+    },
+    {
+      "clave": "Medidas",
+      "valor": "2 plazas (140 × 190) o Queen (160 × 200)"
+    },
+    {
+      "clave": "Cuidado",
+      "valor": "Lavarropas a 40 °C, no necesita planchado"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+.DS_Store
+.netlify/
+
+# Material de referencia (zips de AI Studio) y config local
+referencias/
+.claude/

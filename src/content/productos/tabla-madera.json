@@ -1,0 +1,46 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 100,
+  "slug": "tabla-madera",
+  "fotos": [],
+  "nombre": "Tabla de picar de madera",
+  "categoria": "Cocina",
+  "ambientes": [
+    "Cocina"
+  ],
+  "precio": 95000,
+  "medida": "2 tamaños",
+  "ilustracion": "tabla",
+  "fondo": "#e8dcc8",
+  "resumen": "Maciza, con mango. Para cortar o para servir picadas.",
+  "descripcion": "Tabla de madera maciza con mango, para cortar o para servir picadas en la mesa.",
+  "opciones": {
+    "titulo": "Tamaño",
+    "items": [
+      {
+        "nombre": "Mediana",
+        "nota": "30 × 20 cm",
+        "precio": 95000
+      },
+      {
+        "nombre": "Grande",
+        "nota": "40 × 25 cm",
+        "precio": 140000,
+        "precioOferta": 120000
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Madera maciza"
+    },
+    {
+      "clave": "Cuidado",
+      "valor": "Lavar a mano"
+    }
+  ]
+}

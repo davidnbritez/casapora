@@ -1,0 +1,167 @@
+# Configuración del panel (Sveltia CMS) — https://github.com/sveltia/sveltia-cms
+#
+# ANTES DE PUBLICAR: cambiá "repo" por tu usuario/repositorio de GitHub y
+# "base_url" por la dirección de tu worker de login (sveltia-cms-auth).
+# Para probar sin internet: abrí /admin en Chrome o Edge y elegí
+# "Trabajar con repositorio local" (Work with Local Repository).
+backend:
+  name: github
+  repo: davidnbritez/casapora
+  branch: main
+  base_url: https://sveltia-cms-auth.TU-CUENTA.workers.dev
+  commit_messages:
+    create: "Nuevo {{collection}}: {{slug}}"
+    update: "Editar {{collection}}: {{slug}}"
+    delete: "Borrar {{collection}}: {{slug}}"
+    uploadMedia: "Subir foto {{path}}"
+    deleteMedia: "Borrar foto {{path}}"
+
+locale: es
+# Cambiá por el dominio definitivo (igual que "site" en astro.config.mjs).
+site_url: https://casapora.netlify.app
+display_url: https://casapora.netlify.app
+
+media_folder: src/assets/uploads
+public_folder: /uploads
+media_libraries:
+  default:
+    config:
+      transformations:
+        raster_image:
+          format: webp
+          quality: 85
+          width: 2000
+          height: 2000
+
+collections:
+  - name: productos
+    label: Productos
+    label_singular: Producto
+    description: Cada producto del catálogo. Al guardar, el sitio se actualiza en ~1 minuto.
+    folder: src/content/productos
+    format: json
+    extension: json
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    identifier_field: nombre
+    summary: "{{activo | ternary('', '[OCULTO] ')}}{{nombre}} — Gs. {{precio}}{{precioOferta | ternary(' · OFERTA', '')}}{{agotado | ternary(' · AGOTADO', '')}}"
+    sortable_fields:
+      fields: [orden, nombre, precio, categoria]
+      default: { field: orden, direction: ascending }
+    view_filters:
+      - { label: Desactivados, field: activo, pattern: false }
+      - { label: Agotados, field: agotado, pattern: true }
+      - { label: Destacados, field: destacado, pattern: true }
+      - { label: Nuevos, field: nuevo, pattern: true }
+    view_groups:
+      - { label: Tipo, field: categoria }
+    fields:
+      - { name: activo, label: Activo (se muestra en la web), widget: boolean, default: true, hint: "Apagado: el producto no aparece en la web, pero no se borra." }
+      - { name: agotado, label: Agotado, widget: boolean, default: false, hint: "Aparece en la web pero no se puede agregar al pedido; muestra el botón Avisarme." }
+      - { name: nombre, label: Nombre, widget: string }
+      - name: slug
+        label: Identificador (va en el enlace)
+        hint: Solo minúsculas, números y guiones. Ej. funda-almohadon-lino. No lo cambies después de publicar.
+        widget: string
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', 'Solo minúsculas, números y guiones']
+      - name: categoria
+        label: Tipo de producto
+        widget: relation
+        collection: tienda
+        file: config
+        value_field: "tipos.*"
+        search_fields: ["tipos.*"]
+        display_fields: ["tipos.*"]
+      - name: ambientes
+        label: Ambientes
+        widget: relation
+        multiple: true
+        collection: tienda
+        file: config
+        value_field: "ambientes.*"
+        search_fields: ["ambientes.*"]
+        display_fields: ["ambientes.*"]
+      - { name: precio, label: "Precio normal (Gs.)", widget: number, value_type: int, min: 0, hint: "Sin puntos. Ej. 85000" }
+      - { name: precioOferta, label: "Precio de oferta (Gs.)", widget: number, value_type: int, min: 0, required: false, hint: "Promoción: si lo completás, la web cobra este precio y muestra el normal tachado con el % de descuento. Borralo para terminar la oferta." }
+      - { name: etiqueta, label: Etiqueta, widget: string, required: false, hint: "Ej. Oferta, Más vendido, Hecho a mano" }
+      - { name: destacado, label: Destacado, widget: boolean, default: false, hint: "Aparece primero en el orden Destacados." }
+      - { name: nuevo, label: Nuevo, widget: boolean, default: false }
+      - { name: fotos, label: Fotos, widget: list, required: false, field: { name: foto, label: Foto, widget: image }, hint: "La primera es la principal. Ideal: fondo claro, luz natural, formato horizontal 4:3." }
+      - { name: resumen, label: Resumen (una línea), widget: string, required: false }
+      - { name: descripcion, label: Descripción, widget: text, required: false }
+      - { name: medida, label: Medida corta (aparece en la tarjeta), widget: string, required: false, hint: "Ej. 45 × 45 cm, 350 ml, Set de 3" }
+      - name: opciones
+        label: Opciones (color, tamaño, aroma…)
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: titulo, label: "Título (ej. Color, Tamaño)", widget: string, required: false }
+          - name: items
+            label: Opciones
+            widget: list
+            required: false
+            summary: "{{nombre}}"
+            fields:
+              - { name: nombre, label: Nombre, widget: string }
+              - { name: color, label: Color (solo si es un color), widget: color, required: false }
+              - { name: nota, label: "Nota (ej. 40 × 25 cm)", widget: string, required: false }
+              - { name: precio, label: "Precio normal propio (Gs.)", widget: number, value_type: int, required: false, hint: "Vacío = usa el precio del producto." }
+              - { name: precioOferta, label: "Precio de oferta propio (Gs.)", widget: number, value_type: int, required: false }
+              - { name: fotos, label: Fotos de esta opción, widget: list, required: false, field: { name: foto, label: Foto, widget: image } }
+      - name: detalles
+        label: Detalles (ficha)
+        widget: list
+        required: false
+        summary: "{{clave}}: {{valor}}"
+        fields:
+          - { name: clave, label: "Dato (ej. Material)", widget: string }
+          - { name: valor, label: "Valor (ej. 100% lino)", widget: string }
+      - { name: orden, label: Orden, widget: number, value_type: int, default: 100, hint: "Más chico = aparece antes (después de los destacados)." }
+      - name: ilustracion
+        label: Ilustración de reemplazo (si no hay foto)
+        widget: select
+        required: false
+        options: [taza, vasos, toallas, vela, tabla, florero, manta, cubiertos, frascos]
+      - { name: fondo, label: Color de fondo de la ilustración, widget: color, required: false }
+
+  - name: tienda
+    label: Tienda
+    description: Nombre, WhatsApp, textos de la portada y listas de tipos y ambientes.
+    files:
+      - name: config
+        label: Configuración de la tienda
+        file: src/data/tienda.json
+        format: json
+        fields:
+          - { name: nombre, label: Nombre de la tienda, widget: string }
+          - { name: lema, label: Lema (debajo del nombre), widget: string }
+          - { name: whatsapp, label: "WhatsApp (con 595, sin + ni espacios)", widget: string, pattern: ['^[0-9]{8,15}$', 'Solo números, ej. 595981123456'] }
+          - { name: anuncios, label: Barra de anuncios, widget: list, field: { name: texto, label: Texto, widget: string } }
+          - { name: portada, label: Foto de portada, widget: image, required: false }
+          - { name: portadaAlt, label: Descripción de la foto (accesibilidad), widget: string, required: false }
+          - { name: eyebrow, label: Texto chico arriba del título, widget: string }
+          - { name: titulo, label: Título de portada, widget: string }
+          - { name: bajada, label: Texto de portada, widget: text }
+          - name: destacado
+            label: Producto destacado en portada
+            widget: relation
+            collection: productos
+            value_field: slug
+            search_fields: [nombre]
+            display_fields: [nombre]
+          - { name: catalogoEyebrow, label: Catálogo · texto chico, widget: string }
+          - { name: catalogoTitulo, label: Catálogo · título, widget: string }
+          - { name: catalogoBajada, label: Catálogo · texto, widget: string }
+          - { name: sobre, label: Sobre nosotros (pie de página), widget: text }
+          - name: compromisos
+            label: Compromisos
+            widget: list
+            summary: "{{texto}}"
+            fields:
+              - { name: icono, label: Ícono, widget: select, options: [{ label: Envío, value: truck }, { label: Pago, value: card }, { label: Chat, value: chat }] }
+              - { name: texto, label: "Texto (lo que va antes de ':' se destaca)", widget: string }
+          - { name: pie, label: Aclaración del pie, widget: string }
+          - { name: tipos, label: Tipos de producto (pestañas), widget: list, field: { name: tipo, label: Tipo, widget: string } }
+          - { name: ambientes, label: Ambientes, widget: list, field: { name: ambiente, label: Ambiente, widget: string } }

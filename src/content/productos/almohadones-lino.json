@@ -1,0 +1,57 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": true,
+  "nuevo": true,
+  "orden": 10,
+  "slug": "almohadones-lino",
+  "fotos": [
+    "/uploads/almohadones-lino.jpg"
+  ],
+  "nombre": "Funda de almohadón de lino",
+  "categoria": "Textiles",
+  "ambientes": [
+    "Living",
+    "Dormitorio"
+  ],
+  "precio": 85000,
+  "etiqueta": "Más vendido",
+  "medida": "45 × 45 cm",
+  "resumen": "Lino lavado con terminación deshilachada. Cálida y fresca a la vez.",
+  "descripcion": "Funda de lino lavado, de textura suave y aspecto relajado, con bordes deshilachados. Tiene cierre oculto y se combina fácil con otros tonos tierra.",
+  "opciones": {
+    "titulo": "Color",
+    "items": [
+      {
+        "nombre": "Terracota",
+        "color": "#a6563a"
+      },
+      {
+        "nombre": "Natural",
+        "color": "#d8ccb8"
+      },
+      {
+        "nombre": "Arena",
+        "color": "#bfae94"
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "100% lino lavado"
+    },
+    {
+      "clave": "Medidas",
+      "valor": "45 × 45 cm"
+    },
+    {
+      "clave": "Cierre",
+      "valor": "Cierre oculto"
+    },
+    {
+      "clave": "Cuidado",
+      "valor": "Lavarropas en frío"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 90,
+  "slug": "vela-aromatica",
+  "fotos": [],
+  "nombre": "Vela aromática en frasco",
+  "categoria": "Decoración",
+  "ambientes": [
+    "Living",
+    "Dormitorio",
+    "Baño"
+  ],
+  "precio": 65000,
+  "medida": "≈ 30 horas",
+  "ilustracion": "vela",
+  "fondo": "#efd9c9",
+  "resumen": "Cera de soja con aromas suaves para cualquier ambiente.",
+  "descripcion": "Vela de cera de soja en frasco de vidrio, con unas 30 horas de duración. Aromas suaves que no saturan.",
+  "opciones": {
+    "titulo": "Aroma",
+    "items": [
+      {
+        "nombre": "Vainilla y madera"
+      },
+      {
+        "nombre": "Lavanda"
+      },
+      {
+        "nombre": "Cítricos"
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Cera",
+      "valor": "Soja"
+    },
+    {
+      "clave": "Duración",
+      "valor": "≈ 30 horas"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": true,
+  "orden": 45,
+  "slug": "mesita-taburete",
+  "fotos": [
+    "/uploads/mesita-taburete.jpg"
+  ],
+  "nombre": "Mesita y taburete de madera maciza",
+  "categoria": "Muebles",
+  "ambientes": [
+    "Living",
+    "Dormitorio"
+  ],
+  "precio": 520000,
+  "etiqueta": "Hecho a mano",
+  "medida": "2 piezas",
+  "resumen": "Madera maciza torneada a mano, para el sillón o al lado de la cama.",
+  "descripcion": "Piezas de madera maciza con formas suaves y terminación aceitada. La mesita redonda sirve de apoyo junto al sillón o como mesa de luz; el taburete funciona como asiento o para apoyar plantas y libros.",
+  "opciones": {
+    "titulo": "Pieza",
+    "items": [
+      {
+        "nombre": "Mesita redonda",
+        "nota": "Ø 55 × 50 cm",
+        "precio": 520000
+      },
+      {
+        "nombre": "Taburete",
+        "nota": "45 × 30 × 42 cm",
+        "precio": 380000
+      },
+      {
+        "nombre": "Mesita + taburete",
+        "nota": "Las dos piezas",
+        "precio": 900000,
+        "precioOferta": 830000
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Madera maciza aceitada"
+    },
+    {
+      "clave": "Terminación",
+      "valor": "Torneado a mano: cada pieza es única"
+    },
+    {
+      "clave": "Cuidado",
+      "valor": "Paño seco; aceitar una vez al año"
+    }
+  ]
+}

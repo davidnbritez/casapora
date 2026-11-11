@@ -1,0 +1,55 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": true,
+  "nuevo": false,
+  "orden": 30,
+  "slug": "canastos-tejidos",
+  "fotos": [
+    "/uploads/canastos-tejidos.jpg"
+  ],
+  "nombre": "Canasto tejido con tapa",
+  "categoria": "Organización",
+  "ambientes": [
+    "Living",
+    "Dormitorio",
+    "Baño"
+  ],
+  "precio": 160000,
+  "etiqueta": "Hecho a mano",
+  "medida": "3 tamaños",
+  "resumen": "Fibra natural con asas de cuero. Guarda mantas, juguetes o ropa.",
+  "descripcion": "Canasto tejido a mano en fibra natural, con tapa y asas de cuero. Ideal para guardar mantas en el living, ropa en el dormitorio o toallas en el baño.",
+  "opciones": {
+    "titulo": "Tamaño",
+    "items": [
+      {
+        "nombre": "Chico",
+        "nota": "Ø 30 cm",
+        "precio": 95000
+      },
+      {
+        "nombre": "Mediano",
+        "nota": "Ø 40 cm",
+        "precio": 160000,
+        "precioOferta": 135000
+      },
+      {
+        "nombre": "Grande",
+        "nota": "Ø 50 cm",
+        "precio": 180000
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Fibra natural y cuero"
+    },
+    {
+      "clave": "Terminación",
+      "valor": "Tejido a mano"
+    }
+  ],
+  "precioOferta": 135000
+}

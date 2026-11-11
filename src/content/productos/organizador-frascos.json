@@ -1,0 +1,30 @@
+{
+  "activo": true,
+  "agotado": true,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 130,
+  "slug": "organizador-frascos",
+  "fotos": [],
+  "nombre": "Organizador con frascos",
+  "categoria": "Organización",
+  "ambientes": [
+    "Cocina"
+  ],
+  "precio": 110000,
+  "medida": "Bandeja + 3 frascos",
+  "ilustracion": "frascos",
+  "fondo": "#e6e0d3",
+  "resumen": "Bandeja de madera con 3 frascos herméticos.",
+  "descripcion": "Bandeja de madera con 3 frascos herméticos para yerba, azúcar y café.",
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Madera y vidrio"
+    },
+    {
+      "clave": "Incluye",
+      "valor": "Bandeja + 3 frascos"
+    }
+  ]
+}

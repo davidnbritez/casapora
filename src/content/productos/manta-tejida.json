@@ -1,0 +1,52 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 50,
+  "slug": "manta-tejida",
+  "fotos": [],
+  "nombre": "Manta tejida para sillón",
+  "categoria": "Textiles",
+  "ambientes": [
+    "Living",
+    "Dormitorio"
+  ],
+  "precio": 240000,
+  "medida": "130 × 170 cm",
+  "ilustracion": "manta",
+  "fondo": "#eadfd2",
+  "resumen": "Liviana, con flecos, para el sillón o los pies de la cama.",
+  "descripcion": "Manta de algodón tejido, liviana y suave, con flecos en los extremos. Abriga sin pesar y suma textura a cualquier sillón o cama.",
+  "opciones": {
+    "titulo": "Color",
+    "items": [
+      {
+        "nombre": "Terracota",
+        "color": "#b85c38"
+      },
+      {
+        "nombre": "Salvia",
+        "color": "#6f8064"
+      },
+      {
+        "nombre": "Piedra",
+        "color": "#8a8178"
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Algodón tejido"
+    },
+    {
+      "clave": "Medidas",
+      "valor": "130 × 170 cm"
+    },
+    {
+      "clave": "Cuidado",
+      "valor": "Lavado delicado"
+    }
+  ]
+}

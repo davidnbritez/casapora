@@ -1,0 +1,49 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "orden": 25,
+  "slug": "toallas-waffle",
+  "fotos": [
+    "/uploads/toallas-waffle.jpg"
+  ],
+  "nombre": "Set de toallas waffle",
+  "categoria": "Textiles",
+  "ambientes": [
+    "Baño"
+  ],
+  "precio": 250000,
+  "etiqueta": "Secado rápido",
+  "medida": "Set de 3",
+  "resumen": "Tejido nido de abeja: absorbe al instante y se seca en la mitad del tiempo.",
+  "descripcion": "Set de toallas de algodón con textura waffle (nido de abeja). Son livianas, absorben al instante y se secan rápido, así no guardan humedad ni olor. Incluye toallón, toalla de mano y toalla de tocador.",
+  "opciones": {
+    "titulo": "Color",
+    "items": [
+      {
+        "nombre": "Arena",
+        "color": "#c9b79c"
+      },
+      {
+        "nombre": "Salvia",
+        "color": "#6b7a5f"
+      }
+    ]
+  },
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "100% algodón, tejido waffle"
+    },
+    {
+      "clave": "Incluye",
+      "valor": "Toallón 100 × 150, toalla 50 × 100 y tocador 30 × 50 cm"
+    },
+    {
+      "clave": "Cuidado",
+      "valor": "Lavar a 40 °C sin suavizante"
+    }
+  ],
+  "precioOferta": 210000
+}

@@ -1,0 +1,38 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": true,
+  "orden": 35,
+  "slug": "organizador-bano",
+  "fotos": [
+    "/uploads/organizador-bano.jpg"
+  ],
+  "nombre": "Organizador de baño de piedra y madera",
+  "categoria": "Organización",
+  "ambientes": [
+    "Baño"
+  ],
+  "precio": 260000,
+  "medida": "Bandeja + 4 piezas",
+  "resumen": "Bandeja de piedra con dispensador, vaso y portacepillos de madera.",
+  "descripcion": "Set para la mesada del baño: bandeja de piedra natural con dispensador de jabón, vaso y dos módulos de madera para cepillos y frascos. Ordena el lavatorio y le da un aire de spa.",
+  "detalles": [
+    {
+      "clave": "Material",
+      "valor": "Piedra natural, madera y cerámica"
+    },
+    {
+      "clave": "Incluye",
+      "valor": "Bandeja, dispensador, vaso y 2 módulos de madera"
+    },
+    {
+      "clave": "Medidas",
+      "valor": "Bandeja 34 × 14 cm"
+    },
+    {
+      "clave": "Cuidado",
+      "valor": "Paño húmedo y jabón neutro"
+    }
+  ]
+}
