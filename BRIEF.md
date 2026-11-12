@@ -165,7 +165,7 @@ Ideas que el dueño ya mencionó, para una segunda etapa. Dejar el código orden
 
 ## 10. Pendiente del dueño
 
-- [x] Nombre definitivo de la tienda: **Nice Home** (antes Casa Porã; direcciones web: `nicehome`; el repositorio de GitHub sigue siendo `davidnbritez/casapora`)
+- [x] Nombre definitivo de la tienda: **Nice Home** (antes Casa Porã; direcciones web: `nicehome`)
 - [ ] Número de WhatsApp
 - [ ] Productos (nombre, precio, tipo, ambientes, opciones) y fotos
 - [ ] Textos de envíos y formas de pago para la sección de compromisos

@@ -2,7 +2,7 @@
 #
 # Login: con cuenta de GitHub (botón "Iniciar sesión con GitHub").
 # - Cada persona necesita una cuenta de GitHub con permiso de escritura en el repositorio
-#   (github.com/davidnbritez/casapora → Settings → Collaborators).
+#   (github.com/davidnbritez/nicehome → Settings → Collaborators).
 # - El inicio de sesión pasa por un servicio gratis en Cloudflare (sveltia-cms-auth), ver README.
 #
 # El panel guarda en la rama "borrador", NO en la web.
@@ -11,7 +11,7 @@
 #   (GitHub Actions → "Publicar cambios" → Run workflow).
 backend:
   name: github
-  repo: davidnbritez/casapora
+  repo: davidnbritez/nicehome
   branch: borrador
   # Dirección del servicio de inicio de sesión (worker de Cloudflare). La completa Claude Code cuando exista.
   base_url: https://sveltia-cms-auth.TU-SUBDOMINIO.workers.dev

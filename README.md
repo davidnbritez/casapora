@@ -28,7 +28,7 @@ Las fotos de muestra (living, almohadones, cortinas, canastos y cajas) vienen de
 - Web: **https://nicehome.pages.dev** (rama `main`). Cloudflare Pages publica solo en cada cambio de `main` (plan gratis: 500 publicaciones por mes).
 - Configuración del proyecto en Cloudflare: *Workers & Pages → nicehome*. Build: `npm run build`, carpeta `dist`, Node 22 (archivo `.node-version`). Cabeceras en `public/_headers`.
 - **El panel guarda en la rama `borrador`**, no en la web. Vista previa: **https://borrador.nicehome.pages.dev** (Cloudflare hace vista previa de cada rama).
-- **Para publicar lo del panel:** menú del panel → *Publicar cambios en la web*, o github.com/davidnbritez/casapora → **Actions → Publicar cambios → Run workflow**.
+- **Para publicar lo del panel:** menú del panel → *Publicar cambios en la web*, o github.com/davidnbritez/nicehome → **Actions → Publicar cambios → Run workflow**.
 - Cuando cambia `main`, la acción *Sincronizar borrador* lleva esos cambios al borrador.
 - Dominio propio: cambiar `https://nicehome.pages.dev` en `astro.config.mjs` y `public/admin/config.yml`.
 
@@ -42,4 +42,4 @@ Cada persona entra a `/admin` con **su cuenta de GitHub**. Configuración (una s
    - Authorization callback URL: `https://sveltia-cms-auth.<subdominio>.workers.dev/callback`
 3. En el worker (*Settings → Variables and Secrets*): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (como secreto) y `ALLOWED_DOMAINS` = `nicehome.pages.dev, *.nicehome.pages.dev, localhost`.
 4. Poner la dirección del worker en `base_url` de `public/admin/config.yml`.
-5. Dar acceso a la segunda persona: github.com/davidnbritez/casapora → *Settings → Collaborators → Add people*.
+5. Dar acceso a la segunda persona: github.com/davidnbritez/nicehome → *Settings → Collaborators → Add people*.
