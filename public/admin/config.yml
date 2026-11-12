@@ -13,8 +13,8 @@ backend:
   name: github
   repo: davidnbritez/nicehome
   branch: borrador
-  # Dirección del servicio de inicio de sesión (worker de Cloudflare). La completa Claude Code cuando exista.
-  base_url: https://sveltia-cms-auth.TU-SUBDOMINIO.workers.dev
+  # Servicio de inicio de sesión (worker sveltia-cms-auth en Cloudflare).
+  base_url: https://sveltia-cms-auth.nicehome.workers.dev
   commit_messages:
     create: "Nuevo {{collection}}: {{slug}}"
     update: "Editar {{collection}}: {{slug}}"

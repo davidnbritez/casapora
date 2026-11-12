@@ -36,10 +36,10 @@ Las fotos de muestra (living, almohadones, cortinas, canastos y cajas) vienen de
 
 Cada persona entra a `/admin` con **su cuenta de GitHub**. Configuración (una sola vez):
 
-1. **Servicio de inicio de sesión:** desplegar [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) con el botón *Deploy to Cloudflare Workers*. Queda en `https://sveltia-cms-auth.<subdominio>.workers.dev`.
+1. **Servicio de inicio de sesión:** desplegar [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) con el botón *Deploy to Cloudflare Workers*. Queda en `https://sveltia-cms-auth.nicehome.workers.dev`.
 2. **OAuth App en GitHub:** *Settings → Developer settings → OAuth Apps → New OAuth App*.
    - Homepage URL: `https://nicehomepy.pages.dev`
-   - Authorization callback URL: `https://sveltia-cms-auth.<subdominio>.workers.dev/callback`
+   - Authorization callback URL: `https://sveltia-cms-auth.nicehome.workers.dev/callback`
 3. En el worker (*Settings → Variables and Secrets*): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (como secreto) y `ALLOWED_DOMAINS` = `nicehomepy.pages.dev, *.nicehomepy.pages.dev, localhost`.
 4. Poner la dirección del worker en `base_url` de `public/admin/config.yml`.
 5. Dar acceso a la segunda persona: github.com/davidnbritez/nicehome → *Settings → Collaborators → Add people*.
