@@ -1,6 +1,6 @@
 # Cuando cambia la web (rama main), lleva esos cambios también al borrador del panel,
 # para que el panel siempre trabaje sobre la última versión. Si el borrador no existe, lo crea.
-# No gasta créditos de Netlify: las publicaciones de ramas que no son main son vistas previas.
+# Las publicaciones de ramas que no son main son vistas previas (no cambian la web).
 name: Sincronizar borrador
 
 on:
@@ -25,7 +25,7 @@ jobs:
 
       - name: Llevar main al borrador
         run: |
-          git config user.name "Casa Porã (panel)"
+          git config user.name "Nice Home (panel)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           if ! git fetch origin borrador; then

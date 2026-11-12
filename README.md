@@ -1,4 +1,4 @@
-# Casa Porã — catálogo con pedido por WhatsApp
+# Nice Home — catálogo con pedido por WhatsApp
 
 Sitio estático en **Astro**, panel de carga en **/admin** (Decap CMS + Netlify Identity) y publicación en **Netlify**.
 El brief completo está en [BRIEF.md](BRIEF.md). El prototipo original quedó en [prototipo/index.html](prototipo/index.html).
@@ -23,21 +23,23 @@ npm run build      # genera la carpeta dist/
 
 Las fotos de muestra (living, almohadones, cortinas, canastos y cajas) vienen del prototipo de Áurea Hogar. **Reemplazalas por fotos propias antes de publicar.**
 
-## Publicación (cuidando los créditos de Netlify)
+## Publicación (Cloudflare Pages)
 
-- Web: **https://casapora.netlify.app** (rama `main`). Cada publicación en `main` gasta ~15 de los 300 créditos mensuales del plan gratis.
-- **El panel guarda en la rama `borrador`**, no en la web. Vista previa gratis del borrador: **https://borrador--casapora.netlify.app**.
-- **Para publicar lo del panel:** menú del panel → *Publicar cambios en la web*, o github.com/davidnbritez/casapora → **Actions → Publicar cambios → Run workflow**. Pasa todo el borrador a la web en una sola publicación.
-- Cuando cambia `main`, la acción *Sincronizar borrador* lleva esos cambios al borrador sola (si la rama `borrador` no existe, la crea).
-- Para dominio propio: cambiar `https://casapora.netlify.app` en `astro.config.mjs` y `public/admin/config.yml`.
+- Web: **https://nicehomepy.pages.dev** (rama `main`). Cloudflare Pages publica solo en cada cambio de `main` (plan gratis: 500 publicaciones por mes).
+- Configuración del proyecto en Cloudflare: *Workers & Pages → nicehomepy*. Build: `npm run build`, carpeta `dist`, Node 22 (archivo `.node-version`). Cabeceras en `public/_headers`.
+- **El panel guarda en la rama `borrador`**, no en la web. Vista previa: **https://borrador.nicehomepy.pages.dev** (Cloudflare hace vista previa de cada rama).
+- **Para publicar lo del panel:** menú del panel → *Publicar cambios en la web*, o github.com/davidnbritez/nicehome → **Actions → Publicar cambios → Run workflow**.
+- Cuando cambia `main`, la acción *Sincronizar borrador* lleva esos cambios al borrador.
+- Dominio propio: cambiar `https://nicehomepy.pages.dev` en `astro.config.mjs` y `public/admin/config.yml`.
 
-### Configuración necesaria en Netlify (una vez)
-*Project configuration → Build & deploy → Branches and deploy contexts → Branch deploys → "Let me add individual branches"* → agregar **`borrador`** (y las ramas de lote, ej. `lote-1`, para revisarlas antes de publicar).
+## Login del panel (con GitHub)
 
-## Login del panel (una sola vez, en Netlify)
+Cada persona entra a `/admin` con **su cuenta de GitHub**. Configuración (una sola vez):
 
-1. **Project configuration → Identity → Enable Identity.**
-2. En *Registration preferences* elegí **Invite only** (nadie se puede registrar solo).
-3. En *Services → Git Gateway* tocá **Enable Git Gateway** (le da permiso al panel para guardar en GitHub).
-4. En la pestaña **Identity** (arriba) tocá **Invite users** y poné los emails de las dos personas.
-5. Cada una recibe un email, toca el enlace, elige contraseña y queda adentro de `casapora.netlify.app/admin`.
+1. **Servicio de inicio de sesión:** desplegar [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) con el botón *Deploy to Cloudflare Workers*. Queda en `https://sveltia-cms-auth.nicehome.workers.dev`.
+2. **OAuth App en GitHub:** *Settings → Developer settings → OAuth Apps → New OAuth App*.
+   - Homepage URL: `https://nicehomepy.pages.dev`
+   - Authorization callback URL: `https://sveltia-cms-auth.nicehome.workers.dev/callback`
+3. En el worker (*Settings → Variables and Secrets*): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (como secreto) y `ALLOWED_DOMAINS` = `nicehomepy.pages.dev, *.nicehomepy.pages.dev, localhost`.
+4. Poner la dirección del worker en `base_url` de `public/admin/config.yml`.
+5. Dar acceso a la segunda persona: github.com/davidnbritez/nicehome → *Settings → Collaborators → Add people*.

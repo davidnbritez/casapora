@@ -1,4 +1,4 @@
-# Casa Porã — Brief del proyecto (para Claude Code)
+# Nice Home — Brief del proyecto (para Claude Code)
 
 > Tienda web de artículos para el hogar (Paraguay). El cliente arma el pedido en la web y lo **envía por WhatsApp**; el pago se coordina en el chat. Se publica en **Netlify**. Tiene un **panel simple** para cargar productos, activarlos/desactivarlos y manejar promociones. **Sin base de datos por ahora**: empezar simple y crecer después.
 
@@ -96,7 +96,7 @@ Nombre, lema, número de WhatsApp, anuncios de la barra superior, textos de port
 - Carrito con cantidades, quitar, vaciar (confirmación en dos toques), nombre y notas opcionales, total y **"Enviar pedido por WhatsApp"**:
 
 ```
-¡Hola Casa Porã! Quiero hacer este pedido:
+¡Hola Nice Home! Quiero hacer este pedido:
 
 • 2 × Taza de cerámica artesanal (Azul petróleo) — Gs. 90.000
 • 1 × Tabla de picar de madera (Grande, 40 × 25 cm) — Gs. 120.000
@@ -165,7 +165,7 @@ Ideas que el dueño ya mencionó, para una segunda etapa. Dejar el código orden
 
 ## 10. Pendiente del dueño
 
-- [x] Nombre definitivo de la tienda: **Casa Porã** (direcciones web: `casapora`)
+- [x] Nombre definitivo de la tienda: **Nice Home** (antes Casa Porã; direcciones web: `nicehome`)
 - [ ] Número de WhatsApp
 - [ ] Productos (nombre, precio, tipo, ambientes, opciones) y fotos
 - [ ] Textos de envíos y formas de pago para la sección de compromisos
