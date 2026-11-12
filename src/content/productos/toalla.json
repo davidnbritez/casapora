@@ -1,0 +1,38 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "fotos": [],
+  "detalles": [],
+  "orden": 50,
+  "slug": "toalla",
+  "nombre": "Toalla",
+  "categoria": "Textiles",
+  "ambientes": [
+    "Baño"
+  ],
+  "precio": 45000,
+  "ilustracion": "toallas",
+  "fondo": "#e4dccf",
+  "opciones": {
+    "titulo": "Color",
+    "items": [
+      {
+        "nombre": "Azul",
+        "color": "#3d5f8f"
+      },
+      {
+        "nombre": "Gris",
+        "color": "#8a8a88"
+      },
+      {
+        "nombre": "Naranja",
+        "color": "#d9822b"
+      }
+    ]
+  },
+  "combinaCon": [
+    "set-de-bano-organizador"
+  ]
+}

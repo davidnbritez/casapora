@@ -34,7 +34,7 @@ function imgFor(p, i = 0, photo = 0, size = "card", eager = false) {
   const alt = `${esc(p.nombre)}${o ? ` — ${esc(o.nombre)}` : ""}`;
   if (f) return `<img src="${f.md}" srcset="${f.sm} 400w, ${f.md} 800w, ${f.lg} 1400w" sizes="${SIZES[size]}" width="${f.w}" height="${f.h}" alt="${alt}" ${eager ? "" : 'loading="lazy"'} decoding="async">`;
   const accent = (o && o.color) || "#b85c38";
-  return `<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${alt}"><rect width="200" height="200" fill="${p.fondo || "#ece4d8"}"/>${ART[p.ilustracion] ? ART[p.ilustracion](accent) : `<text x="100" y="106" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#776d60">${esc(p.nombre)}</text>`}</svg>`;
+  return `<svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${alt}"><rect width="200" height="200" fill="${p.fondo || "#ece4d8"}"/>${ART[p.ilustracion] ? ART[p.ilustracion](accent) : `<text x="100" y="98" text-anchor="middle" font-family="Georgia,serif" font-size="12.5" fill="#5f584f">${esc(p.nombre.length > 30 ? p.nombre.slice(0, 29) + "…" : p.nombre)}</text><text x="100" y="118" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7" letter-spacing="1.6" fill="#776d60">FOTO PRÓXIMAMENTE</text>`}</svg>`;
 }
 function priceHTML(p, i) { const { precio, antes } = priceOf(p, i); return antes ? `<b class="sale">${gs(precio)}</b><s>${gs(antes)}</s>` : `<b>${gs(precio)}</b>`; }
 function pillsHTML(p, i) {

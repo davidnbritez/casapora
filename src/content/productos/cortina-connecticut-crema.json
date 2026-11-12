@@ -1,0 +1,17 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "fotos": [],
+  "detalles": [],
+  "orden": 30,
+  "slug": "cortina-connecticut-crema",
+  "nombre": "Cortina Connecticut crema",
+  "categoria": "Textiles",
+  "ambientes": [
+    "Living",
+    "Dormitorio"
+  ],
+  "precio": 115000
+}

@@ -1,0 +1,19 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "fotos": [],
+  "detalles": [],
+  "orden": 40,
+  "slug": "set-de-bano-organizador",
+  "nombre": "Set de baño organizador",
+  "categoria": "Organización",
+  "ambientes": [
+    "Baño"
+  ],
+  "precio": 95000,
+  "combinaCon": [
+    "toalla"
+  ]
+}

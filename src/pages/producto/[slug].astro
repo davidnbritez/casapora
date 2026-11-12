@@ -37,7 +37,7 @@ const ld = {
         <div class="gal-main">
           {f
             ? <img src={f.md} srcset={`${f.sm} 400w, ${f.md} 800w, ${f.lg} 1400w`} sizes="(max-width:900px) 100vw, 640px" width={f.w} height={f.h} alt={p.nombre} />
-            : <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label={p.nombre}><rect width="200" height="200" fill={p.fondo || "#ece4d8"} /><Fragment set:html={ART[p.ilustracion] ? ART[p.ilustracion](p.opciones?.items?.[0]?.color || "#b85c38") : ""} /></svg>}
+            : <svg viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label={p.nombre}><rect width="200" height="200" fill={p.fondo || "#ece4d8"} /><Fragment set:html={ART[p.ilustracion] ? ART[p.ilustracion](p.opciones?.items?.[0]?.color || "#b85c38") : `<text x="100" y="98" text-anchor="middle" font-family="Georgia,serif" font-size="12.5" fill="#5f584f">${p.nombre.replace(/[&<>]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;"}[c]))}</text><text x="100" y="118" text-anchor="middle" font-family="system-ui,sans-serif" font-size="7" letter-spacing="1.6" fill="#776d60">FOTO PRÓXIMAMENTE</text>`} /></svg>}
         </div>
       </div>
       <div class="info">

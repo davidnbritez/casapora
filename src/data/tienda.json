@@ -1,8 +1,11 @@
 {
   "nombre": "Nice Home",
   "lema": "Artículos para el hogar",
-  "whatsapp": "595981000000",
-  "anuncios": ["Envíos a Asunción y Gran Asunción", "Atención personalizada por WhatsApp"],
+  "whatsapp": "595992143664",
+  "anuncios": [
+    "Envíos a Asunción y Gran Asunción",
+    "Atención personalizada por WhatsApp"
+  ],
   "eyebrow": "Artículos para el hogar · Asunción",
   "titulo": "Almohadones, cortinas y canastos para que tu casa se sienta lista.",
   "bajada": "Textiles cálidos y orden sereno para cada rincón. Armá tu pedido acá, lo confirmamos por WhatsApp y te lo llevamos a casa en Asunción y Gran Asunción.",
@@ -10,31 +13,80 @@
   "ctaWhatsapp": "Escribinos",
   "portada": "/uploads/portada-living.jpg",
   "portadaAlt": "Living luminoso con cortinas de lino y almohadones en tonos tierra",
-  "destacado": "almohadones-lino",
+  "destacado": "toalla",
   "plazoEntrega": "",
   "garantia": "",
-  "envio": { "activo": false, "gratisDesde": 300000 },
+  "envio": {
+    "activo": false,
+    "gratisDesde": 300000
+  },
   "zonas": [
-    { "nombre": "Asunción", "costo": 0 },
-    { "nombre": "Gran Asunción", "costo": 0 },
-    { "nombre": "Interior", "costo": 0, "sinEnvioGratis": true }
+    {
+      "nombre": "Asunción",
+      "costo": 0
+    },
+    {
+      "nombre": "Gran Asunción",
+      "costo": 0
+    },
+    {
+      "nombre": "Interior",
+      "costo": 0,
+      "sinEnvioGratis": true
+    }
   ],
-  "retiro": { "activo": true, "texto": "Retiro coordinado", "detalle": "Sin costo. Te pasamos el punto de retiro por WhatsApp." },
-  "pagos": ["Transferencia", "QR", "Efectivo"],
-  "factura": { "activo": true },
+  "retiro": {
+    "activo": true,
+    "texto": "Retiro coordinado",
+    "detalle": "Sin costo. Te pasamos el punto de retiro por WhatsApp."
+  },
+  "pagos": [
+    "Transferencia",
+    "QR",
+    "Efectivo"
+  ],
+  "factura": {
+    "activo": true
+  },
   "camposExtra": [],
-  "regalo": { "activo": false, "precio": 0 },
+  "regalo": {
+    "activo": false,
+    "precio": 0
+  },
   "opinionesTitulo": "Lo que dicen en casa",
   "catalogoEyebrow": "Catálogo",
   "catalogoTitulo": "Cosas pensadas para disfrutar tu casa",
   "catalogoBajada": "Filtrá por ambiente o por tipo de producto para encontrar lo que buscás.",
   "sobre": "Elegimos cada pieza pensando en hogares cálidos, prácticos y lindos de habitar.",
   "compromisos": [
-    { "icono": "truck", "texto": "Envíos a domicilio en Asunción y Gran Asunción" },
-    { "icono": "card", "texto": "Pagás como prefieras: transferencia, QR o efectivo" },
-    { "icono": "chat", "texto": "Te asesoramos por WhatsApp antes de comprar" }
+    {
+      "icono": "truck",
+      "texto": "Envíos a domicilio en Asunción y Gran Asunción"
+    },
+    {
+      "icono": "card",
+      "texto": "Pagás como prefieras: transferencia, QR o efectivo"
+    },
+    {
+      "icono": "chat",
+      "texto": "Te asesoramos por WhatsApp antes de comprar"
+    }
   ],
   "pie": "Precios en guaraníes, sujetos a disponibilidad.",
-  "tipos": ["Textiles", "Ropa de cama", "Organización", "Muebles", "Decoración", "Vajilla", "Cocina"],
-  "ambientes": ["Living", "Comedor", "Cocina", "Dormitorio", "Baño"]
+  "tipos": [
+    "Textiles",
+    "Ropa de cama",
+    "Organización",
+    "Muebles",
+    "Decoración",
+    "Vajilla",
+    "Cocina"
+  ],
+  "ambientes": [
+    "Living",
+    "Comedor",
+    "Cocina",
+    "Dormitorio",
+    "Baño"
+  ]
 }
