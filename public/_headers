@@ -1,4 +1,4 @@
-# Cabeceras para Cloudflare Pages (equivalen a las de netlify.toml).
+# Cabeceras para Cloudflare Pages.
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 

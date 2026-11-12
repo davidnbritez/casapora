@@ -1,6 +1,6 @@
 # Nice Home — catálogo con pedido por WhatsApp
 
-Sitio estático en **Astro**, panel de carga en **/admin** (Decap CMS + Netlify Identity) y publicación en **Netlify**.
+Sitio estático en **Astro**, panel de carga en **/admin** (Decap CMS con login de GitHub) y publicación en **Cloudflare Pages**.
 El brief completo está en [BRIEF.md](BRIEF.md). El prototipo original quedó en [prototipo/index.html](prototipo/index.html).
 
 ## Usar en tu computadora
