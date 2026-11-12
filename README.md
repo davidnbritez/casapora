@@ -25,12 +25,12 @@ Las fotos de muestra (living, almohadones, cortinas, canastos y cajas) vienen de
 
 ## Publicación (Cloudflare Pages)
 
-- Web: **https://nicehome.pages.dev** (rama `main`). Cloudflare Pages publica solo en cada cambio de `main` (plan gratis: 500 publicaciones por mes).
-- Configuración del proyecto en Cloudflare: *Workers & Pages → nicehome*. Build: `npm run build`, carpeta `dist`, Node 22 (archivo `.node-version`). Cabeceras en `public/_headers`.
-- **El panel guarda en la rama `borrador`**, no en la web. Vista previa: **https://borrador.nicehome.pages.dev** (Cloudflare hace vista previa de cada rama).
+- Web: **https://nicehomepy.pages.dev** (rama `main`). Cloudflare Pages publica solo en cada cambio de `main` (plan gratis: 500 publicaciones por mes).
+- Configuración del proyecto en Cloudflare: *Workers & Pages → nicehomepy*. Build: `npm run build`, carpeta `dist`, Node 22 (archivo `.node-version`). Cabeceras en `public/_headers`.
+- **El panel guarda en la rama `borrador`**, no en la web. Vista previa: **https://borrador.nicehomepy.pages.dev** (Cloudflare hace vista previa de cada rama).
 - **Para publicar lo del panel:** menú del panel → *Publicar cambios en la web*, o github.com/davidnbritez/nicehome → **Actions → Publicar cambios → Run workflow**.
 - Cuando cambia `main`, la acción *Sincronizar borrador* lleva esos cambios al borrador.
-- Dominio propio: cambiar `https://nicehome.pages.dev` en `astro.config.mjs` y `public/admin/config.yml`.
+- Dominio propio: cambiar `https://nicehomepy.pages.dev` en `astro.config.mjs` y `public/admin/config.yml`.
 
 ## Login del panel (con GitHub)
 
@@ -38,8 +38,8 @@ Cada persona entra a `/admin` con **su cuenta de GitHub**. Configuración (una s
 
 1. **Servicio de inicio de sesión:** desplegar [sveltia-cms-auth](https://github.com/sveltia/sveltia-cms-auth) con el botón *Deploy to Cloudflare Workers*. Queda en `https://sveltia-cms-auth.<subdominio>.workers.dev`.
 2. **OAuth App en GitHub:** *Settings → Developer settings → OAuth Apps → New OAuth App*.
-   - Homepage URL: `https://nicehome.pages.dev`
+   - Homepage URL: `https://nicehomepy.pages.dev`
    - Authorization callback URL: `https://sveltia-cms-auth.<subdominio>.workers.dev/callback`
-3. En el worker (*Settings → Variables and Secrets*): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (como secreto) y `ALLOWED_DOMAINS` = `nicehome.pages.dev, *.nicehome.pages.dev, localhost`.
+3. En el worker (*Settings → Variables and Secrets*): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET` (como secreto) y `ALLOWED_DOMAINS` = `nicehomepy.pages.dev, *.nicehomepy.pages.dev, localhost`.
 4. Poner la dirección del worker en `base_url` de `public/admin/config.yml`.
 5. Dar acceso a la segunda persona: github.com/davidnbritez/nicehome → *Settings → Collaborators → Add people*.

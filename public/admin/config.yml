@@ -6,7 +6,7 @@
 # - El inicio de sesión pasa por un servicio gratis en Cloudflare (sveltia-cms-auth), ver README.
 #
 # El panel guarda en la rama "borrador", NO en la web.
-# - Vista previa del borrador: https://borrador.nicehome.pages.dev
+# - Vista previa del borrador: https://borrador.nicehomepy.pages.dev
 # - Para pasar los cambios a la web: "Publicar cambios en la web" en el menú del panel
 #   (GitHub Actions → "Publicar cambios" → Run workflow).
 backend:
@@ -26,8 +26,8 @@ locale: es
 # Solo en esta computadora (localhost): permite probar el panel con "npx decap-server" sin login.
 local_backend: true
 # "Ver sitio" del panel abre la vista previa del borrador (gratis), no la web publicada.
-site_url: https://borrador.nicehome.pages.dev
-display_url: https://nicehome.pages.dev
+site_url: https://borrador.nicehomepy.pages.dev
+display_url: https://nicehomepy.pages.dev
 
 # Las fotos se guardan en src/assets/uploads para que el sitio las convierta a WebP.
 media_folder: src/assets/uploads
