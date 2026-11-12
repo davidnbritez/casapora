@@ -1,0 +1,19 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "fotos": [],
+  "detalles": [],
+  "orden": 20,
+  "slug": "almohada-viscoelastica-bamboo",
+  "nombre": "Almohada viscoelástica bamboo",
+  "categoria": "Ropa de cama",
+  "ambientes": [
+    "Dormitorio"
+  ],
+  "precio": 120000,
+  "combinaCon": [
+    "almohada-tipo-estrella"
+  ]
+}

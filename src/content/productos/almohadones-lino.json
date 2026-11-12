@@ -6,7 +6,7 @@
     "Dormitorio"
   ],
   "precio": 85000,
-  "destacado": true,
+  "destacado": false,
   "nombre": "Funda de almohadón de lino",
   "orden": 10,
   "slug": "almohadones-lino",
@@ -14,7 +14,7 @@
   "fotos": [
     "/uploads/almohadones-lino.jpg"
   ],
-  "activo": true,
+  "activo": false,
   "categoria": "Textiles",
   "opciones": {
     "titulo": "Color",

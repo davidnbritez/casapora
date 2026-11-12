@@ -1,7 +1,7 @@
 {
-  "activo": true,
+  "activo": false,
   "agotado": false,
-  "destacado": true,
+  "destacado": false,
   "nuevo": true,
   "orden": 15,
   "slug": "sabanas-lino",

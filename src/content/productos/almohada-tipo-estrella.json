@@ -1,0 +1,19 @@
+{
+  "activo": true,
+  "agotado": false,
+  "destacado": false,
+  "nuevo": false,
+  "fotos": [],
+  "detalles": [],
+  "orden": 10,
+  "slug": "almohada-tipo-estrella",
+  "nombre": "Almohada tipo estrella",
+  "categoria": "Ropa de cama",
+  "ambientes": [
+    "Dormitorio"
+  ],
+  "precio": 130000,
+  "combinaCon": [
+    "almohada-viscoelastica-bamboo"
+  ]
+}

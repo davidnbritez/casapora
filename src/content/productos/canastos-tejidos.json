@@ -1,7 +1,7 @@
 {
-  "activo": true,
+  "activo": false,
   "agotado": false,
-  "destacado": true,
+  "destacado": false,
   "nuevo": false,
   "orden": 30,
   "slug": "canastos-tejidos",
