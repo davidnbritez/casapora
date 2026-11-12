@@ -24,7 +24,7 @@ jobs:
 
       - name: Pasar el borrador a la web
         run: |
-          git config user.name "Casa Porã (panel)"
+          git config user.name "Nice Home (panel)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           if ! git fetch origin borrador; then
